@@ -2,14 +2,17 @@ package com.lb.employeeleave.controller;
 
 import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.service.LeaveTypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("leave-types")
 public class LeaveTypeController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LeaveTypeController.class);
 
     private final LeaveTypeService leaveTypeService;
 
@@ -17,39 +20,31 @@ public class LeaveTypeController {
         this.leaveTypeService = leaveTypeService;
     }
 
-    @GetMapping("leave-types")
-    public ResponseEntity<List<LeaveType>> retrieveAllLeaveTypes(){
-        List<LeaveType> leaveTypeList = leaveTypeService.getAllLeaveTypes();
-        if(leaveTypeList == null){
-            return new ResponseEntity<>(leaveTypeList, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(leaveTypeList, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<?> retrieveAllLeaveTypes(){
+
+        LOGGER.info("Retrieve all LeaveTypes");
+        return new ResponseEntity<>(leaveTypeService.getAllLeaveTypes(), HttpStatus.OK);
     }
 
-    @GetMapping("leave-type/{id}")
-    public ResponseEntity<LeaveType> retrieveLeaveType(@PathVariable long id){
-        LeaveType leaveTypeRe = leaveTypeService.getLeaveTypeById(id);
-        if(leaveTypeRe == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(leaveTypeRe, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> retrieveLeaveType(@PathVariable long id){
+
+        LOGGER.info("Retrieve single LeaveType");
+        return new ResponseEntity<>(leaveTypeService.getLeaveTypeById(id), HttpStatus.OK);
     }
 
-    @PostMapping("leave-type")
-    public ResponseEntity<LeaveType> createLeaveType(@RequestBody LeaveType leaveType){
-        LeaveType leaveTypeRe = leaveTypeService.createLeaveType(leaveType);
-        if(leaveTypeRe == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<>(leaveTypeRe, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<?> createLeaveType(@RequestBody LeaveType leaveType){
+
+        LOGGER.info("Create LeaveType");
+        return new ResponseEntity<>( leaveTypeService.createLeaveType(leaveType), HttpStatus.OK);
     }
 
-    @PutMapping("leave-type")
-    public ResponseEntity<LeaveType> updateLeaveType(@RequestBody LeaveType leaveType){
-        LeaveType leaveTypeRe = leaveTypeService.updateLeaveType(leaveType);
-        if(leaveTypeRe == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<>(leaveTypeRe, HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<?> updateLeaveType(@RequestBody LeaveType leaveType){
+
+        LOGGER.info("Update LeaveType");
+        return new ResponseEntity<>(leaveTypeService.updateLeaveType(leaveType), HttpStatus.OK);
     }
 }

@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("/employees")
 public class EmployeeController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
@@ -22,82 +21,69 @@ public class EmployeeController {
     }
 
     /**
-     * Returns list of all employees.
-     * Http Get Method must be specified.
+     * Retrieve all Employees.
+     * Http Get method must be specified.
      * Url must be set on - server-url/base-path/employees
      * The data is returned in JSON format
      *
-     * @return List of employees in JSON format
+     * @return List of Employee in JSON format
      */
-    @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> retrieveAllEmployees() {
+    @GetMapping
+    public ResponseEntity<?> retrieveAllEmployees() {
 
-        LOGGER.info("Returning all the Employee´s");
-        List<Employee> employeeList = employeeService.getAllEmployees();
-        if(employeeList==null || employeeList.size()==0 ){
-            return new ResponseEntity(employeeList, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+        LOGGER.info("Returning all Employee´s");
+        return new ResponseEntity<>( employeeService.getAllEmployees(), HttpStatus.OK);
     }
 
 
     /**
-     * Returns single employee.
-     * Http Get Method must be specified.
+     * Retrieve single Employee.
+     * Http Get method must be specified.
      * Url must be set on - server-url/base-path/employee/{id}
      * The data is returned in JSON format
      *
-     * @param id id of employee that we want to retrieve
-     * @return List of employees in JSON format
+     * @param id id of Employee that we want to retrieve
+     * @return Employee in JSON format
      */
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> retrieveEmployee(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> retrieveEmployee(@PathVariable long id) {
 
-        Employee employeeRe = employeeService.getEmployeeById(id);
-        if(employeeRe == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Employee>(employeeRe, HttpStatus.OK);
+        LOGGER.info("Returning single Employee");
+        return new ResponseEntity<>(employeeService.getEmployeeById(id), HttpStatus.OK);
     }
 
 
     /**
-     * Returns Created employee.
-     * Http Post Method must be specified.
-     * Url must be set on - server-url/base-path/employees
+     * Create Employee.
+     * Http Post method must be specified.
+     * Url must be set on - server-url/base-path/employee
      * The data is returned in JSON format
      *
-     * @param employee json data specifying user to add
-     * @return Created employees in JSON format
+     * @param employee JSON data specifying employee to add
+     * @return Created Employee in JSON format
      */
-    @PostMapping("/employee")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+    @PostMapping
+    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
 
-        Employee employeeRe = employeeService.createEmployee(employee);
-        if(employeeRe == null ){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<Employee>(employeeRe, HttpStatus.OK);
+        LOGGER.info("Returning created Employee");
+        return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
 
     }
 
     /**
-     * Returns Updated employee.
-     * Http Put Method must be specified.
-     * Url must be set on - server-url/base-path/employee/{id}
+     * Update Employee
+     * Http Put method must be specified.
+     * Url must be set on - server-url/base-path/employee
      * The data is returned in JSON format
      *
-     * @param employee json data specifying employee to update
-     * @return Created employee in JSON format
+     * @param employee JSON data specifying Employee to update
+     * @return Created Employee in JSON format
      */
-    @PutMapping("/employee/{id}")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable long id) {
+    @PutMapping
+    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
 
-        Employee employeeRe = employeeService.updateEmployee(employee);
-        if(employeeRe == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<Employee>(employeeRe, HttpStatus.OK);
+        LOGGER.info("Returning updated Employee");
+        return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
 
     }
 

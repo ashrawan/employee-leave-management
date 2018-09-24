@@ -2,14 +2,17 @@ package com.lb.employeeleave.controller;
 
 import com.lb.employeeleave.entity.EmployeeLeave;
 import com.lb.employeeleave.service.EmployeeLeaveService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("employee-leaves")
 public class EmployeeLeaveController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeLeaveController.class);
 
     private final EmployeeLeaveService employeeLeaveService;
 
@@ -17,58 +20,94 @@ public class EmployeeLeaveController {
         this.employeeLeaveService = employeeLeaveService;
     }
 
-    @GetMapping("employee-leaves")
-    public ResponseEntity<List<EmployeeLeave>> retrieveAllEmployeeLeaves(){
+    /**
+     * Retrieve all Employees
+     * Http Get Method must be specified.
+     * Url must be set on - server-url/base-path/employee-leaves
+     * The data is returned in JSON format
+     *
+     * @return List of EmployeeLeave in JSON format
+     */
+    @GetMapping
+    public ResponseEntity<?> retrieveAllEmployeeLeaves(){
 
-        List<EmployeeLeave> employeeLeaveList = employeeLeaveService.getAllEmployeeLeaves();
-        if(employeeLeaveList == null){
-            return new ResponseEntity<>(employeeLeaveList, HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<List<EmployeeLeave>>(employeeLeaveList, HttpStatus.OK);
+        LOGGER.info("Retrieve all EmployeeLeaves");
+        return new ResponseEntity<>(employeeLeaveService.getAllEmployeeLeaves(), HttpStatus.OK);
     }
 
-    @GetMapping("employee-leave/{id}")
-    public ResponseEntity<EmployeeLeave> retrieveEmployeeLeave(@PathVariable long id){
-        EmployeeLeave employeeLeaveRe = employeeLeaveService.getEmployeeLeaveById(id);
-        if(employeeLeaveRe == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(employeeLeaveRe, HttpStatus.OK);
+    /**
+     * Retrieve single EmployeeLeave
+     * Http Get Method must be specified
+     * Url must be set on - server-url/base-path/employee-leave/{id}
+     *
+     * @param id of EmployeeLeave that we want to retrieve
+     * @return Single Employee in JSON format
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> retrieveEmployeeLeave(@PathVariable long id){
+
+        LOGGER.info("Retrieve single EmployeeLeave");
+        return new ResponseEntity<>(employeeLeaveService.getEmployeeLeaveById(id), HttpStatus.OK);
     }
 
-    @PostMapping("employee-leave")
-    public ResponseEntity<EmployeeLeave> createEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
-        EmployeeLeave employeeLeaveRe = employeeLeaveService.createEmployeeLeave(employeeLeave);
-        if(employeeLeave == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<EmployeeLeave>(employeeLeave, HttpStatus.OK);
+    /**
+     * Create EmployeeLeave
+     * Http Post method must be specified
+     * Url must be set on - server-url/base-path/employee-leave
+     * The data is returned in JSON format
+     *
+     * @param employeeLeave json data specifying EmployeeLeave request to add
+     * @return Created EmployeeLeave in JSON format
+     */
+    @PostMapping
+    public ResponseEntity<?> createEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
+
+        LOGGER.info("Create EmployeeLeave Request");
+        return new ResponseEntity<>(employeeLeaveService.createEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
-    @PutMapping("employee-leave/{id}")
-    public ResponseEntity<EmployeeLeave> updateEmployeeLeave(@RequestBody EmployeeLeave employeeLeave, @PathVariable long id){
-        EmployeeLeave employeeLeaveRe = employeeLeaveService.updateEmployeeLeave(employeeLeave);
-        if(employeeLeaveRe == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<EmployeeLeave>(employeeLeaveRe, HttpStatus.OK);
+    /**
+     * Update EmployeeLeave
+     * Http put method must be specified
+     * Url must be set on - server-url/base-path/employee-leave/{id}
+     *
+     * @param employeeLeave JSON data specifying EmployeeLeave to update
+     * @return Updated EmployeeLeave in JSON format
+     */
+    @PutMapping
+    public ResponseEntity<?> updateEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
+
+        LOGGER.info("Returning updated EmployeeLeave");
+        return new ResponseEntity<>(employeeLeaveService.updateEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
-    @PutMapping("approve-employee-leave/{id}")
-    public ResponseEntity<EmployeeLeave> approveEmployeeLeave(@RequestBody EmployeeLeave employeeLeave, @PathVariable long id){
-        EmployeeLeave employeeLeaveRe = employeeLeaveService.approveEmployeeLeave(employeeLeave);
-        if(employeeLeaveRe == null){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<EmployeeLeave>(employeeLeave, HttpStatus.OK);
+    /**
+     * Approve EmployeeLeave
+     * Http Put method must be specified
+     * Url must be set on - server-url/base-path/approve-employee-leave
+     *
+     * @param employeeLeave JSON data specifying EmployeeLeave to approve
+     * @return Approved EmployeeLeave in JSON format
+     */
+    @PutMapping("/approve-employee-leave")
+    public ResponseEntity<?> approveEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
+
+        LOGGER.info("Approve EmployeeLeave");
+        return new ResponseEntity<>(employeeLeaveService.approveEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
-    @PutMapping("delete-pending-request/{id}")
-    public ResponseEntity<Boolean> deletePendingLeaveRequest(@PathVariable long id){
-        boolean b = employeeLeaveService.deletePendingEmployeeLeave(id);
-        if(!b){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<Boolean>(b, HttpStatus.OK);
+    /**
+     * Delete Pending EmployeeLeave Request
+     * Http Put method must be specified
+     * Url must be set on - server-url/base-path/delete-pending-request/{id}
+     *
+     * @param id specifying EmployeeLeave to delete
+     * @return Boolean status of EmployeeLeave deletion
+     */
+    @DeleteMapping("/delete-pending-request/{id}")
+    public ResponseEntity<?> deletePendingLeaveRequest(@PathVariable long id){
+
+        LOGGER.info("Delete Pending EmployeeLeave Request");
+        return new ResponseEntity<>(employeeLeaveService.deletePendingEmployeeLeave(id), HttpStatus.OK);
     }
 }
