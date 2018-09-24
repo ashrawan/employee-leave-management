@@ -19,21 +19,41 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
         this.leaveTypeRepository = leaveTypeRepository;
     }
 
+    /**
+     * Get all LeaveTypess Record
+     * @return List of LeaveType
+     */
     @Override
     public List<LeaveType> getAllLeaveTypes() {
         return leaveTypeRepository.findAll();
     }
 
+    /**
+     * Get single LeaveType Record
+     * @param id
+     * @return If present LeaveType else throws Exception
+     */
     @Override
     public LeaveType getLeaveTypeById(Long id) {
         return leaveTypeRepository.findById(id).orElseThrow(()-> new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND));
     }
 
+    /**
+     * Create New LeaveType
+     * @param leaveType
+     * @return saved LeaveType
+     */
     @Override
     public LeaveType createLeaveType(LeaveType leaveType) {
         return leaveTypeRepository.save(leaveType);
     }
 
+    /**
+     * Update LeaveType
+     * LeaveType must be present in database else throws Exception
+     * @param leaveType
+     * @return updated LeaveType
+     */
     @Override
     public LeaveType updateLeaveType(LeaveType leaveType) {
         Optional<LeaveType> returnedLeaveType = leaveTypeRepository.findById(leaveType.getId());
