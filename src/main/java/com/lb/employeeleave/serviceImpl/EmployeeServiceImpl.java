@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,5 +86,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee1.setEmployeeSupervisor(employee.getEmployeeSupervisor());
 
        return employeeRepository.save(employee1);
+    }
+
+    @Override
+    public List<Employee> getAllEmployeeUnderSupervision(Long id) {
+        Optional<Employee> returnedEmployee = employeeRepository.findById(id);
+        // Employee must be present in database
+        if (!returnedEmployee.isPresent()) {
+            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
+        }
+        return employeeRepository.findAllByEmployeeSupervisor(returnedEmployee.get());
     }
 }

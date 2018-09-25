@@ -72,7 +72,6 @@ public class EmployeeController {
 
         LOGGER.info("Returning created Employee");
         return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
-
     }
 
     /**
@@ -89,7 +88,21 @@ public class EmployeeController {
 
         LOGGER.info("Returning updated Employee");
         return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
-
     }
 
+    /**
+     * Retrieve all Employees under supervision.
+     * Http Get method must be specified.
+     * Url must be set on - server-url/base-path/employees-under-supervision/{id}
+     * The data is returned in JSON format
+     *
+     * @param id of employee who is supervising
+     * @return All Employee under supervision
+     */
+    @GetMapping("/employees-under-supervision/{id}")
+    public ResponseEntity<?> retrieveAllEmployeesUnderSupervision(@PathVariable long id) {
+
+        LOGGER.info("Returning all Employees under supervision");
+        return new ResponseEntity<>(employeeService.getAllEmployeeUnderSupervision(id), HttpStatus.OK);
+    }
 }
