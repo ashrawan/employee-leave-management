@@ -6,10 +6,10 @@ import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import com.lb.employeeleave.service.EmployeeService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +26,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return List of Employee
      */
     @Override
-    public List<Employee> getAllEmployees(Pageable pageable) {
+    public Page<Employee> getAllEmployees(Pageable pageable) {
 
-        return employeeRepository.findAll(pageable).getContent();
+        return employeeRepository.findAll(pageable);
     }
 
     /**

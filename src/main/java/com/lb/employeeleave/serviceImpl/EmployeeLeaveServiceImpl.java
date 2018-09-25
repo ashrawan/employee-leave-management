@@ -6,10 +6,10 @@ import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.repository.EmployeeLeaveRepository;
 import com.lb.employeeleave.service.EmployeeLeaveService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +26,9 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      * @return List of EmployeeLeave
      */
     @Override
-    public List<EmployeeLeave> getAllEmployeeLeaves(Pageable pageable) {
+    public Page<EmployeeLeave> getAllEmployeeLeaves(Pageable pageable) {
 
-        return employeeLeaveRepository.findAll(pageable).getContent();
+        return employeeLeaveRepository.findAll(pageable);
     }
 
     /**
