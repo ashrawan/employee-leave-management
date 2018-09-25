@@ -10,8 +10,10 @@ public interface LeaveTypeService {
 
     LeaveType getLeaveTypeById(Long id);
 
+    // only admin
     LeaveType createLeaveType(LeaveType leaveType);
 
+    // only admin
     LeaveType updateLeaveType(LeaveType leaveType);
 
 }

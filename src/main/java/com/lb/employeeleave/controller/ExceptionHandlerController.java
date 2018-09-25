@@ -1,5 +1,6 @@
 package com.lb.employeeleave.controller;
 
+import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.exceptions.ExceptionResponse;
 import org.slf4j.Logger;
@@ -24,6 +25,16 @@ public class ExceptionHandlerController {
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setCallerUrl(request.getRequestURI());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataConflictException.class)
+    public ResponseEntity<?> dataConflictException(final DataConflictException ex, final HttpServletRequest request) {
+
+        LOGGER.info("DataConflictException handled");
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setMessage(ex.getMessage());
+        exceptionResponse.setCallerUrl(request.getRequestURI());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
 }

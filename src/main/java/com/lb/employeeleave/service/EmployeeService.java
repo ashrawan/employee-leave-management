@@ -1,17 +1,19 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.entity.Employee;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees(Pageable pageable);
 
     Employee getEmployeeById(Long id);
 
+    // only allowed to admin
     Employee createEmployee(Employee employee);
 
-    // update only allowed to admin
+    // only allowed to admin
     Employee updateEmployee(Employee employee);
 }

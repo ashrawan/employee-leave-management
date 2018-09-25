@@ -1,8 +1,10 @@
 package com.lb.employeeleave.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,10 @@ public class Employee {
     @Column
     @Enumerated(EnumType.STRING)
     private USER_ROLE role = USER_ROLE.ROLE_USER;
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime createdDateTime;
 
     @Column
     private int status;
@@ -95,6 +101,14 @@ public class Employee {
 
     public void setRole(USER_ROLE role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
     public int getStatus() {

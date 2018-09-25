@@ -2,9 +2,11 @@ package com.lb.employeeleave.serviceImpl;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.entity.EmployeeLeave;
+import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.repository.EmployeeLeaveRepository;
 import com.lb.employeeleave.service.EmployeeLeaveService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,9 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      * @return List of EmployeeLeave
      */
     @Override
-    public List<EmployeeLeave> getAllEmployeeLeaves() {
-        return employeeLeaveRepository.findAll();
+    public List<EmployeeLeave> getAllEmployeeLeaves(Pageable pageable) {
+
+        return employeeLeaveRepository.findAll(pageable).getContent();
     }
 
     /**
@@ -35,6 +38,7 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      */
     @Override
     public EmployeeLeave getEmployeeLeaveById(Long id) {
+
         return employeeLeaveRepository.findById(id).orElseThrow(()-> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
     }
 
@@ -45,23 +49,29 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      */
     @Override
     public EmployeeLeave createEmployeeLeave(EmployeeLeave employeeLeave) {
+
         return employeeLeaveRepository.save(employeeLeave);
     }
 
     /**
      * Update EmployeeLeave
      * EmployeeLeave Record must be present in database else throws Exception
-     * Can only be updated by Employee if EmployeeLeave request status is pending-0
+     * EmployeeLeave status must be in pending else throws Exception
      * @param employeeLeave
      * @return updated EmployeeLeave
      */
     @Override
     public EmployeeLeave updateEmployeeLeave(EmployeeLeave employeeLeave) {
+
         Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeave.getId());
+        // EmployeeLeave Record must be present in database
         if(!returnedEmployeeLeave.isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
         }
-        // Is EmployeeLeave status still pending
+        // EmployeeLeave status must be in pending
+        if(returnedEmployeeLeave.get().getReviewedByEmployee() != null){
+            throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
+        }
         EmployeeLeave employeeLeave1 = returnedEmployeeLeave.get();
         employeeLeave1.setLeaveType(employeeLeave.getLeaveType());
         employeeLeave1.setLeaveDateFrom(employeeLeave.getLeaveDateFrom());
@@ -73,13 +83,15 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
     /**
      * Approved EmployeeLeave request
      * EmployeeLeave Record must be present in database else throws Exception
-     * Can only be update by EmployeeSupervisor or Admin
+     *
      * @param employeeLeave
      * @return approved EmployeeLeave
      */
     @Override
     public EmployeeLeave approveEmployeeLeave(EmployeeLeave employeeLeave) {
+
         Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeave.getId());
+        // EmployeeLeave Record must be present in database
         if(!returnedEmployeeLeave.isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
         }
@@ -94,18 +106,23 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
     /**
      * Delete EmployeeLeave request that is still pending
      * EmployeeLeave Record must be present in database else throws Exception
-     * Can only be deleted by Employee
-     * Must be Deleted prior to the leave request starting date
+     * EmployeeLeave status must be in pending else throws Exception
+     *
      * @param id
      * @return boolean value of EmployeeLeave Deletion
      */
     @Override
     public boolean deletePendingEmployeeLeave(Long id) {
+
         Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(id);
+        // EmployeeLeave Record must be present in database
         if(!returnedEmployeeLeave.isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
         }
-        // leave request date must be less than current date
+        // EmployeeLeave status must be in pending
+        if(returnedEmployeeLeave.get().getReviewedByEmployee() != null){
+            throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
+        }
         employeeLeaveRepository.delete(returnedEmployeeLeave.get());
         return true;
     }

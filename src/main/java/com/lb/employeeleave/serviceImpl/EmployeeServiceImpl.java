@@ -2,9 +2,11 @@ package com.lb.employeeleave.serviceImpl;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.entity.Employee;
+import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import com.lb.employeeleave.service.EmployeeService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return List of Employee
      */
     @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<Employee> getAllEmployees(Pageable pageable) {
+
+        return employeeRepository.findAll(pageable).getContent();
     }
 
     /**
@@ -47,6 +50,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee createEmployee(Employee employee) {
+
+        //  EmployeeSupervisor id is sent but id doesn't exist in database
         if(employee.getEmployeeSupervisor()!= null && !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
@@ -58,6 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Employee must be present in database else throws Exception
      * Employee cannot be their own Supervisor and EmployeeSupervisor id must be present in database else throws Exception
      * Can only update Employee FullName, Email and EmployeeSupervisor
+     *
      * @param employee
      * @return updated Employee
      */
@@ -65,12 +71,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee updateEmployee(Employee employee) {
 
         Optional<Employee> returnedEmployee = employeeRepository.findById(employee.getId());
+        // Employee must be present in database
         if (!returnedEmployee.isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
         }
         Employee employee1 = returnedEmployee.get();
+        // Employee cannot be their own Supervisor and EmployeeSupervisor must be present in database
         if (employee1.getId() == employee.getEmployeeSupervisor().getId() || !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
+            throw new DataConflictException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
         employee1.setFullName(employee.getFullName());
         employee1.setEmail(employee1.getEmail());

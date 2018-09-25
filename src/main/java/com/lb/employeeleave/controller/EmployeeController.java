@@ -4,6 +4,10 @@ import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +30,14 @@ public class EmployeeController {
      * Url must be set on - server-url/base-path/employees
      * The data is returned in JSON format
      *
+     * @param pageable
      * @return List of Employee in JSON format
      */
     @GetMapping
-    public ResponseEntity<?> retrieveAllEmployees() {
+    public ResponseEntity<?> retrieveAllEmployees(@PageableDefault(page = 0, size = 10, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
         LOGGER.info("Returning all Employee´s");
-        return new ResponseEntity<>( employeeService.getAllEmployees(), HttpStatus.OK);
+        return new ResponseEntity<>( employeeService.getAllEmployees(pageable), HttpStatus.OK);
     }
 
 
