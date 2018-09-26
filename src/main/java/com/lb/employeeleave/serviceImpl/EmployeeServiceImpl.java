@@ -97,4 +97,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employeeRepository.findAllByEmployeeSupervisor(returnedEmployee.get());
     }
+
+    @Override
+    public Page<Employee> getAllEmployeesByName(Pageable pageable, String fullName) {
+        return employeeRepository.findByFullNameStartingWithIgnoreCase(pageable, fullName);
+    }
 }

@@ -19,4 +19,6 @@ public interface EmployeeService {
     Employee updateEmployee(Employee employee);
 
     List<Employee> getAllEmployeeUnderSupervision(Long id);
+
+    Page<Employee> getAllEmployeesByName(Pageable pageable, String fullName);
 }

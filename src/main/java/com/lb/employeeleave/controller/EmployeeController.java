@@ -7,10 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/employees")
@@ -104,5 +107,12 @@ public class EmployeeController {
 
         LOGGER.info("Returning all Employees under supervision");
         return new ResponseEntity<>(employeeService.getAllEmployeeUnderSupervision(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/employee-by-fullname")
+    public ResponseEntity<?> retrieveAllEmployeesByFullName(@PageableDefault(page = 0, size = 10) Pageable pageable,@RequestParam("fullname") String fullname) {
+
+        LOGGER.info("Returning all Employee´s");
+        return new ResponseEntity<>( employeeService.getAllEmployeesByName(pageable, fullname), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.lb.employeeleave.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,9 +28,11 @@ public class EmployeeLeave {
     @Column(columnDefinition="TEXT")
     private String leaveReason;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate leaveDateFrom;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate leaveDateTo;
 
@@ -42,6 +45,7 @@ public class EmployeeLeave {
     @Column
     private int status;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column
     @CreationTimestamp
     private LocalDateTime createdDateTime;
