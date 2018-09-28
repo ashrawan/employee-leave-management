@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee createEmployee(Employee employee) {
 
         //  EmployeeSupervisor id is sent but id doesn't exist in database
-        if(employee.getEmployeeSupervisor()!= null && !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
+        if(employee.getEmployeeSupervisor()!= null && employee.getEmployeeSupervisor().getId()!= null && !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
         return employeeRepository.save(employee);
@@ -78,10 +78,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         Employee employee1 = returnedEmployee.get();
         // Employee cannot be their own Supervisor and EmployeeSupervisor must be present in database
-        if (employee1.getId() == employee.getEmployeeSupervisor().getId() || !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
+        if ((employee.getEmployeeSupervisor()!= null && employee.getEmployeeSupervisor().getId()!= null) && (employee1.getId() == employee.getEmployeeSupervisor().getId() || !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent())){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
         employee1.setFullName(employee.getFullName());
+        employee1.setUsername(employee.getUsername());
         employee1.setEmail(employee1.getEmail());
         employee1.setEmployeeSupervisor(employee.getEmployeeSupervisor());
 
