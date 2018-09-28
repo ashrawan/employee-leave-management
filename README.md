@@ -44,3 +44,7 @@ CLASS DIAGRAM
   
 ![](https://lh5.googleusercontent.com/0C47jvj4Cbc2u9H4ekCiepo51G-VVNo2IZ0qySkt206x3ig_MTAYcjPdEYAdOfCoP-7tr2M0uKrpYHJOkOKPQjS4SyQgcsKDQkl0uNp9PHxV2A8Vu1DWHcdTvFjmWXMzFZaI9kmR)  
  
+ 
+ Github Link:
+- [x] Backend: https://github.com/ashrawan/employee-leave-management
+- [ ] Frontend: https://github.com/ashrawan/employee-leave-react
