@@ -1,6 +1,10 @@
 package com.lb.employeeleave.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,7 +16,6 @@ import java.util.List;
 @Table(name="employee")
 public class Employee {
 
-    public enum USER_ROLE {ROLE_USER, ROLE_ADMIN}
 
     @Id
     @Column
@@ -25,15 +28,15 @@ public class Employee {
     @Column
     private String email;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
     private String password;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private USER_ROLE role = USER_ROLE.ROLE_USER;
+//    @Enumerated(EnumType.STRING)
+    private String role;
 
     @Column
     @CreationTimestamp
@@ -54,6 +57,7 @@ public class Employee {
     @JsonIgnore
     @OneToMany(mappedBy = "reviewedByEmployee")
     private List<EmployeeLeave> reviewedEmployeeLeaves = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -95,11 +99,11 @@ public class Employee {
         this.password = password;
     }
 
-    public USER_ROLE getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(USER_ROLE role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

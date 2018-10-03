@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("leave-types")
+@RequestMapping("/rest/leave-types")
 public class LeaveTypeController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LeaveTypeController.class);
@@ -23,28 +23,28 @@ public class LeaveTypeController {
     @GetMapping
     public ResponseEntity<?> retrieveAllLeaveTypes(){
 
-        LOGGER.info("Retrieve all LeaveTypes");
+        LOGGER.info("API Retrieve all LeaveTypes");
         return new ResponseEntity<>(leaveTypeService.getAllLeaveTypes(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveLeaveType(@PathVariable long id){
 
-        LOGGER.info("Retrieve single LeaveType");
+        LOGGER.info("API Retrieve single LeaveType");
         return new ResponseEntity<>(leaveTypeService.getLeaveTypeById(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> createLeaveType(@RequestBody LeaveType leaveType){
 
-        LOGGER.info("Create LeaveType");
+        LOGGER.info("API Create LeaveType");
         return new ResponseEntity<>( leaveTypeService.createLeaveType(leaveType), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> updateLeaveType(@RequestBody LeaveType leaveType){
 
-        LOGGER.info("Update LeaveType");
+        LOGGER.info("API Update LeaveType");
         return new ResponseEntity<>(leaveTypeService.updateLeaveType(leaveType), HttpStatus.OK);
     }
 }

@@ -1,13 +1,18 @@
 package com.lb.employeeleave.serviceImpl;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
+import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.entity.EmployeeLeave;
 import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
+import com.lb.employeeleave.exceptions.UnauthorizedRequest;
 import com.lb.employeeleave.repository.EmployeeLeaveRepository;
+import com.lb.employeeleave.security.JwtUserDetails;
 import com.lb.employeeleave.service.EmployeeLeaveService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -73,7 +78,9 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
         }
         EmployeeLeave employeeLeave1 = returnedEmployeeLeave.get();
-        employeeLeave1.setLeaveType(employeeLeave.getLeaveType());
+        if(employeeLeave.getLeaveType() !=null && employeeLeave.getLeaveType().getId()!=null){
+            employeeLeave1.setLeaveType(employeeLeave.getLeaveType());
+        }
         employeeLeave1.setLeaveDateFrom(employeeLeave.getLeaveDateFrom());
         employeeLeave1.setLeaveDateTo(employeeLeave.getLeaveDateTo());
         employeeLeave1.setLeaveReason(employeeLeave.getLeaveReason());
@@ -95,9 +102,28 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
         if(!returnedEmployeeLeave.isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        long whoIsApprovingID = ((JwtUserDetails) authentication.getPrincipal()).getId();
+        String approverRole = ((JwtUserDetails) authentication.getPrincipal()).getAuthorities().iterator().next().toString();
+//        System.out.println("Who is Approving: "+ whoIsApprovingID);
+//        System.out.println("Role of Approver: "+ approverRole);
+
+        // Setting Approver Id form SecurityContextHolder Authentication
+        Employee approverEmployee = new Employee();
+        approverEmployee.setId(whoIsApprovingID);
+
         EmployeeLeave employeeLeave1 = returnedEmployeeLeave.get();
+
+        // Employee cant approve their own request
+        // If employee is user then must be his supervisor
+        long employeeSupervisorId = employeeLeave1.getEmployee().getEmployeeSupervisor().getId();
+        if(whoIsApprovingID == employeeLeave1.getEmployee().getId() || (approverRole.equals("ROLE_USER") && whoIsApprovingID != employeeSupervisorId)){
+            throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
+        }
+
         employeeLeave1.setIsApproved(employeeLeave.getIsApproved());
-        employeeLeave1.setReviewedByEmployee(employeeLeave.getReviewedByEmployee());
+        employeeLeave1.setReviewedByEmployee(approverEmployee);
         employeeLeave1.setDeniedReason(employeeLeave.getDeniedReason());
         employeeLeave.setStatus(employeeLeave.getStatus());
         return employeeLeaveRepository.save(employeeLeave1);

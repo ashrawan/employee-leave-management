@@ -3,6 +3,7 @@ package com.lb.employeeleave.controller;
 import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.exceptions.ExceptionResponse;
+import com.lb.employeeleave.exceptions.UnauthorizedRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,16 @@ public class ExceptionHandlerController {
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setCallerUrl(request.getRequestURI());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UnauthorizedRequest.class)
+    public ResponseEntity<?> unauthorizedRequest(final UnauthorizedRequest ex, final HttpServletRequest request) {
+
+        LOGGER.info("UnauthorizedRequest handled");
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setMessage(ex.getMessage());
+        exceptionResponse.setCallerUrl(request.getRequestURI());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 
 }

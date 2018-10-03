@@ -13,4 +13,7 @@ public class ExceptionConstants {
     // LeaveType Exception Constant
     public static String LEAVE_TYPE_RECORD_NOT_FOUND = "leave type not found";
 
+    // Unauthorized Request
+    public static String YOU_CANT_REVIEW_THIS_REQUEST = "You cant review this request";
+
 }

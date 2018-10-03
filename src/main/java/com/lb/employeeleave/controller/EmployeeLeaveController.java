@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("employee-leaves")
+@RequestMapping("/rest/employee-leaves")
 public class EmployeeLeaveController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeLeaveController.class);
@@ -35,7 +35,7 @@ public class EmployeeLeaveController {
     @GetMapping
     public ResponseEntity<?> retrieveAllEmployeeLeaves(@PageableDefault(page = 0, size = 10, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable){
 
-        LOGGER.info("Retrieve all EmployeeLeaves");
+        LOGGER.info("API Retrieve all EmployeeLeaves");
         return new ResponseEntity<>(employeeLeaveService.getAllEmployeeLeaves(pageable), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class EmployeeLeaveController {
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveEmployeeLeave(@PathVariable long id){
 
-        LOGGER.info("Retrieve single EmployeeLeave");
+        LOGGER.info("API Retrieve single EmployeeLeave");
         return new ResponseEntity<>(employeeLeaveService.getEmployeeLeaveById(id), HttpStatus.OK);
     }
 
@@ -66,7 +66,7 @@ public class EmployeeLeaveController {
     @PostMapping
     public ResponseEntity<?> createEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
 
-        LOGGER.info("Create EmployeeLeave Request");
+        LOGGER.info("API Create EmployeeLeave Request");
         return new ResponseEntity<>(employeeLeaveService.createEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
@@ -81,7 +81,7 @@ public class EmployeeLeaveController {
     @PutMapping
     public ResponseEntity<?> updateEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
 
-        LOGGER.info("Returning updated EmployeeLeave");
+        LOGGER.info("API update EmployeeLeave");
         return new ResponseEntity<>(employeeLeaveService.updateEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
@@ -96,7 +96,7 @@ public class EmployeeLeaveController {
     @PutMapping("/approve-employee-leave")
     public ResponseEntity<?> approveEmployeeLeave(@RequestBody EmployeeLeave employeeLeave){
 
-        LOGGER.info("Approve EmployeeLeave");
+        LOGGER.info("API Approve EmployeeLeave");
         return new ResponseEntity<>(employeeLeaveService.approveEmployeeLeave(employeeLeave), HttpStatus.OK);
     }
 
@@ -111,7 +111,7 @@ public class EmployeeLeaveController {
     @DeleteMapping("/delete-pending-request/{id}")
     public ResponseEntity<?> deletePendingLeaveRequest(@PathVariable long id){
 
-        LOGGER.info("Delete Pending EmployeeLeave Request");
+        LOGGER.info("API Delete Pending EmployeeLeave Request");
         return new ResponseEntity<>(employeeLeaveService.deletePendingEmployeeLeave(id), HttpStatus.OK);
     }
 }

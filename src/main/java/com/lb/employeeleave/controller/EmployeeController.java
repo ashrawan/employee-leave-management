@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/rest/employees")
 public class EmployeeController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
@@ -39,7 +39,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<?> retrieveAllEmployees(@PageableDefault(page = 0, size = 10, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        LOGGER.info("Returning all Employee´s");
+        LOGGER.info("API Return all Employee´s");
         return new ResponseEntity<>( employeeService.getAllEmployees(pageable), HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveEmployee(@PathVariable long id) {
 
-        LOGGER.info("Returning single Employee");
+        LOGGER.info("API Return single Employee");
         return new ResponseEntity<>(employeeService.getEmployeeById(id), HttpStatus.OK);
     }
 
@@ -73,7 +73,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
 
-        LOGGER.info("Returning created Employee");
+        LOGGER.info("API Return created Employee");
         return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
     }
 
@@ -89,7 +89,7 @@ public class EmployeeController {
     @PutMapping
     public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
 
-        LOGGER.info("Returning updated Employee");
+        LOGGER.info("API Return updated Employee");
         return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
     }
 
@@ -105,14 +105,14 @@ public class EmployeeController {
     @GetMapping("/employees-under-supervision/{id}")
     public ResponseEntity<?> retrieveAllEmployeesUnderSupervision(@PathVariable long id) {
 
-        LOGGER.info("Returning all Employees under supervision");
+        LOGGER.info("API Return all Employees under supervision");
         return new ResponseEntity<>(employeeService.getAllEmployeeUnderSupervision(id), HttpStatus.OK);
     }
 
     @GetMapping("/employee-by-fullname")
     public ResponseEntity<?> retrieveAllEmployeesByFullName(@PageableDefault(page = 0, size = 10) Pageable pageable,@RequestParam("fullname") String fullname) {
 
-        LOGGER.info("Returning all Employee´s");
+        LOGGER.info("API Return Employee´s By FullName");
         return new ResponseEntity<>( employeeService.getAllEmployeesByName(pageable, fullname), HttpStatus.OK);
     }
 }

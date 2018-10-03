@@ -8,6 +8,7 @@ import com.lb.employeeleave.repository.EmployeeRepository;
 import com.lb.employeeleave.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +19,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(final EmployeeRepository employeeRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -43,6 +47,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
     }
 
+    @Override
+    public Employee getActiveUser(String username, int status) {
+        return employeeRepository.findByUsernameAndStatus(username, status);
+    }
+
     /**
      * Create New Employee
      * If EmployeeSupervisor id is sent but id doesn't exist in database then throws Exception
@@ -56,6 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employee.getEmployeeSupervisor()!= null && employee.getEmployeeSupervisor().getId()!= null && !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         return employeeRepository.save(employee);
     }
 
