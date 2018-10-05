@@ -14,6 +14,9 @@ public interface EmployeeService {
 
     Employee getActiveUser(String username, int status);
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    Employee retrieveAuthenticatedEmployee();
+
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     Employee getEmployeeById(Long id);
 

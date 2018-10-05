@@ -5,9 +5,12 @@ import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.repository.EmployeeRepository;
+import com.lb.employeeleave.security.JwtUserDetails;
 import com.lb.employeeleave.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +53,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getActiveUser(String username, int status) {
         return employeeRepository.findByUsernameAndStatus(username, status);
+    }
+
+    @Override
+    public Employee retrieveAuthenticatedEmployee() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        long authenticatedEmployeeId = ((JwtUserDetails) authentication.getPrincipal()).getId();
+        return employeeRepository.findById(authenticatedEmployeeId)
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
     }
 
     /**

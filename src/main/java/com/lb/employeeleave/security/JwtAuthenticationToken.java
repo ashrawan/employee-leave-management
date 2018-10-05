@@ -1,5 +1,6 @@
 package com.lb.employeeleave.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken{
@@ -11,11 +12,13 @@ public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken{
         this.token = token;
     }
 
+    @JsonIgnore
     @Override
     public Object getCredentials() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public Object getPrincipal() {
         return null;

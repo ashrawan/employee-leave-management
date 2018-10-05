@@ -41,4 +41,9 @@ public class TokenController {
         return new ResponseEntity<>(tokens, HttpStatus.OK);
 
     }
+
+    @GetMapping("/server")
+    public ResponseEntity<?> serverStatus(){
+        return new ResponseEntity<>("Server online", HttpStatus.OK);
+    }
 }

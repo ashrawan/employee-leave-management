@@ -1,5 +1,6 @@
 package com.lb.employeeleave.security;
 
+import com.lb.employeeleave.exceptions.UnauthorizedRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -21,7 +22,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 
         String header = httpServletRequest.getHeader(SecurityConstant.HEADER_STRING);
         if (header == null || !header.startsWith(SecurityConstant.TOKEN_PREFIX)) {
-            throw new RuntimeException("JWT Token is missing");
+            throw new UnauthorizedRequest("JWT Token is missing");
         }
         
         String authenticationToken = header.substring(SecurityConstant.TOKEN_PREFIX.length());
@@ -36,4 +37,5 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
         super.successfulAuthentication(request, response, chain, authResult);
         chain.doFilter(request, response);
     }
+
 }

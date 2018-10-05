@@ -47,7 +47,7 @@ public class EmployeeController {
     /**
      * Retrieve single Employee.
      * Http Get method must be specified.
-     * Url must be set on - server-url/base-path/employee/{id}
+     * Url must be set on - server-url/base-path/employees/{id}
      * The data is returned in JSON format
      *
      * @param id id of Employee that we want to retrieve
@@ -58,6 +58,21 @@ public class EmployeeController {
 
         LOGGER.info("API Return single Employee");
         return new ResponseEntity<>(employeeService.getEmployeeById(id), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieve Authenticated Employee Profile.
+     * Http Get method must be specified.
+     * Url must be set on - server-url/base-path/employees/profile
+     * The data is returned in JSON format
+     *
+     * @return Employee in JSON format
+     */
+    @GetMapping("/user-profile")
+    public ResponseEntity<?> retrieveAuthenticatedEmployee() {
+
+        LOGGER.info("API Return Authenticated Employee Profile");
+        return new ResponseEntity<>(employeeService.retrieveAuthenticatedEmployee(), HttpStatus.OK);
     }
 
 
