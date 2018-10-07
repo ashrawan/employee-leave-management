@@ -51,11 +51,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getActiveUser(String username, int status) {
-        return employeeRepository.findByUsernameAndStatus(username, status);
-    }
-
-    @Override
     public Employee retrieveAuthenticatedEmployee() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         long authenticatedEmployeeId = ((JwtUserDetails) authentication.getPrincipal()).getId();

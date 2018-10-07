@@ -68,13 +68,12 @@ public class EmployeeController {
      *
      * @return Employee in JSON format
      */
-    @GetMapping("/user-profile")
+    @GetMapping("/me")
     public ResponseEntity<?> retrieveAuthenticatedEmployee() {
 
         LOGGER.info("API Return Authenticated Employee Profile");
         return new ResponseEntity<>(employeeService.retrieveAuthenticatedEmployee(), HttpStatus.OK);
     }
-
 
     /**
      * Create Employee.

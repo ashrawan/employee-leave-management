@@ -12,8 +12,6 @@ public interface EmployeeService {
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     Page<Employee> getAllEmployees(Pageable pageable);
 
-    Employee getActiveUser(String username, int status);
-
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     Employee retrieveAuthenticatedEmployee();
 

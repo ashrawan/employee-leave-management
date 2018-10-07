@@ -117,8 +117,12 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
 
         // Employee cant approve their own request
         // If employee is user then must be his supervisor
-        long employeeSupervisorId = employeeLeave1.getEmployee().getEmployeeSupervisor().getId();
-        if(whoIsApprovingID == employeeLeave1.getEmployee().getId() || (approverRole.equals("ROLE_USER") && whoIsApprovingID != employeeSupervisorId)){
+//        long employeeSupervisorId = employeeLeave1.getEmployee().getEmployeeSupervisor().getId();
+        if(whoIsApprovingID == employeeLeave1.getEmployee().getId() ||
+                (approverRole.equals("ROLE_USER") &&
+                        (employeeLeave1.getEmployee().getEmployeeSupervisor()!= null &&
+                                employeeLeave1.getEmployee().getEmployeeSupervisor().getId()!= null &&
+                                whoIsApprovingID != employeeLeave1.getEmployee().getEmployeeSupervisor().getId()))){
             throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
         }
 
