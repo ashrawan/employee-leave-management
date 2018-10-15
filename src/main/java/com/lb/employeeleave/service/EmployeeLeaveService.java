@@ -1,6 +1,6 @@
 package com.lb.employeeleave.service;
 
-import com.lb.employeeleave.entity.EmployeeLeave;
+import com.lb.employeeleave.dto.EmployeeLeaveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,24 +8,24 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public interface EmployeeLeaveService {
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    Page<EmployeeLeave> getAllEmployeeLeaves(Pageable pageable);
+    Page<EmployeeLeaveDTO> getAllEmployeeLeaves(Pageable pageable);
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    EmployeeLeave getEmployeeLeaveById(Long id);
+    EmployeeLeaveDTO getEmployeeLeaveById(Long id);
 
     // only employee can create their own leave request
-    @PreAuthorize("#employeeLeave.employee.id == authentication.principal.id ")
-    EmployeeLeave createEmployeeLeave(EmployeeLeave employeeLeave);
+    @PreAuthorize("#employeeLeaveDTO.employee.id == authentication.principal.id ")
+    EmployeeLeaveDTO createEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO);
 
     // only employee if leave request is still pending
-    @PreAuthorize("#employeeLeave.employee.id == authentication.principal.id ")
-    EmployeeLeave updateEmployeeLeave(EmployeeLeave employeeLeave);
+    @PreAuthorize("#employeeLeaveDTO.employee.id == authentication.principal.id ")
+    EmployeeLeaveDTO updateEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO);
 
     // only admin and EmployeeSupervisor
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    EmployeeLeave approveEmployeeLeave(EmployeeLeave employeeLeave);
+    EmployeeLeaveDTO approveEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO);
 
     // only employee on their own pending leave request
     @PreAuthorize("#id == authentication.principal.id ")
-    boolean deletePendingEmployeeLeave(Long id);
+    EmployeeLeaveDTO ChangeEmployeeLeaveStatus(Long id);
 }

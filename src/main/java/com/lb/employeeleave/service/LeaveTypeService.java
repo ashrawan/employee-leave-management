@@ -1,6 +1,6 @@
 package com.lb.employeeleave.service;
 
-import com.lb.employeeleave.entity.LeaveType;
+import com.lb.employeeleave.dto.LeaveTypeDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
@@ -8,17 +8,17 @@ import java.util.List;
 public interface LeaveTypeService {
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    List<LeaveType> getAllLeaveTypes();
+    List<LeaveTypeDTO> getAllLeaveTypes();
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    LeaveType getLeaveTypeById(Long id);
+    LeaveTypeDTO getLeaveTypeById(Long id);
 
     // only admin
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    LeaveType createLeaveType(LeaveType leaveType);
+    LeaveTypeDTO createLeaveType(LeaveTypeDTO leaveTypeDTO);
 
     // only admin
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    LeaveType updateLeaveType(LeaveType leaveType);
+    LeaveTypeDTO updateLeaveType(LeaveTypeDTO leaveTypeDTO);
 
 }

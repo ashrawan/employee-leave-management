@@ -1,19 +1,15 @@
 package com.lb.employeeleave.controller;
 
-import com.lb.employeeleave.entity.Employee;
+import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/rest/employees")
@@ -81,14 +77,14 @@ public class EmployeeController {
      * Url must be set on - server-url/base-path/employee
      * The data is returned in JSON format
      *
-     * @param employee JSON data specifying employee to add
+     * @param employeeDTO JSON data specifying employee to add
      * @return Created Employee in JSON format
      */
     @PostMapping
-    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<?> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
 
         LOGGER.info("API Return created Employee");
-        return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.createEmployee(employeeDTO), HttpStatus.OK);
     }
 
     /**
@@ -97,14 +93,14 @@ public class EmployeeController {
      * Url must be set on - server-url/base-path/employee
      * The data is returned in JSON format
      *
-     * @param employee JSON data specifying Employee to update
+     * @param employeeDTO JSON data specifying Employee to update
      * @return Created Employee in JSON format
      */
     @PutMapping
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
 
         LOGGER.info("API Return updated Employee");
-        return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.updateEmployee(employeeDTO), HttpStatus.OK);
     }
 
     /**
@@ -123,10 +119,20 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getAllEmployeeUnderSupervision(id), HttpStatus.OK);
     }
 
+    /**
+     * Retrieve Employees By fullname.
+     * Http Get method must be specified.
+     * Url must be set on - server-url/base-path/employee-by-fullname
+     * The data is returned in JSON format
+     *
+     * @param pageable
+     * @param fullname
+     * @return Employee matching fullname
+     */
     @GetMapping("/employee-by-fullname")
     public ResponseEntity<?> retrieveAllEmployeesByFullName(@PageableDefault(page = 0, size = 10) Pageable pageable,@RequestParam("fullname") String fullname) {
 
         LOGGER.info("API Return Employee´s By FullName");
-        return new ResponseEntity<>( employeeService.getAllEmployeesByName(pageable, fullname), HttpStatus.OK);
+        return new ResponseEntity<>( employeeService.getAllEmployeesByName(pageable, fullname).getContent(), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.lb.employeeleave.controller;
 
+import com.lb.employeeleave.dto.LeaveTypeDTO;
 import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.service.LeaveTypeService;
 import org.slf4j.Logger;
@@ -35,16 +36,16 @@ public class LeaveTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createLeaveType(@RequestBody LeaveType leaveType){
+    public ResponseEntity<?> createLeaveType(@RequestBody LeaveTypeDTO leaveTypeDTO){
 
         LOGGER.info("API Create LeaveType");
-        return new ResponseEntity<>( leaveTypeService.createLeaveType(leaveType), HttpStatus.OK);
+        return new ResponseEntity<>( leaveTypeService.createLeaveType(leaveTypeDTO), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateLeaveType(@RequestBody LeaveType leaveType){
+    public ResponseEntity<?> updateLeaveType(@RequestBody LeaveTypeDTO leaveTypeDTO){
 
         LOGGER.info("API Update LeaveType");
-        return new ResponseEntity<>(leaveTypeService.updateLeaveType(leaveType), HttpStatus.OK);
+        return new ResponseEntity<>(leaveTypeService.updateLeaveType(leaveTypeDTO), HttpStatus.OK);
     }
 }

@@ -45,18 +45,18 @@ public class Employee {
     @Column
     private int status;
 
-    @JsonIgnoreProperties(value = "employeeSupervisor")
+//    @JsonIgnoreProperties(value = "employeeSupervisor")
     @OneToOne
     @JoinColumn(name="supervisor_employee")
     private Employee employeeSupervisor;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "employee")
-    private List<EmployeeLeave> employeeLeaves = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "reviewedByEmployee")
-    private List<EmployeeLeave> reviewedEmployeeLeaves = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "employee")
+//    private List<EmployeeLeave> employeeLeaves = new ArrayList<>();
+//
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "reviewedByEmployee")
+//    private List<EmployeeLeave> reviewedEmployeeLeaves = new ArrayList<>();
 
 
     public Long getId() {
@@ -131,19 +131,19 @@ public class Employee {
         this.employeeSupervisor = employeeSupervisor;
     }
 
-    public List<EmployeeLeave> getEmployeeLeaves() {
-        return employeeLeaves;
-    }
-
-    public void setEmployeeLeaves(List<EmployeeLeave> employeeLeaves) {
-        this.employeeLeaves = employeeLeaves;
-    }
-
-    public List<EmployeeLeave> getReviewedEmployeeLeaves() {
-        return reviewedEmployeeLeaves;
-    }
-
-    public void setReviewedEmployeeLeaves(List<EmployeeLeave> reviewedEmployeeLeaves) {
-        this.reviewedEmployeeLeaves = reviewedEmployeeLeaves;
-    }
+//    public List<EmployeeLeave> getEmployeeLeaves() {
+//        return employeeLeaves;
+//    }
+//
+//    public void setEmployeeLeaves(List<EmployeeLeave> employeeLeaves) {
+//        this.employeeLeaves = employeeLeaves;
+//    }
+//
+//    public List<EmployeeLeave> getReviewedEmployeeLeaves() {
+//        return reviewedEmployeeLeaves;
+//    }
+//
+//    public void setReviewedEmployeeLeaves(List<EmployeeLeave> reviewedEmployeeLeaves) {
+//        this.reviewedEmployeeLeaves = reviewedEmployeeLeaves;
+//    }
 }

@@ -16,14 +16,14 @@ public class LeaveType {
     private Long id;
 
     @Column
-    private String type_name;
+    private String typeName;
 
     @Column
     private int status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "leaveType")
-    private List<EmployeeLeave> leaveList = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "leaveType")
+//    private List<EmployeeLeave> leaveList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -33,12 +33,12 @@ public class LeaveType {
         this.id = id;
     }
 
-    public String getType_name() {
-        return type_name;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setType_name(String type_name) {
-        this.type_name = type_name;
+    public void setTypeName(String type_name) {
+        this.typeName = type_name;
     }
 
     public int getStatus() {
@@ -49,11 +49,11 @@ public class LeaveType {
         this.status = status;
     }
 
-    public List<EmployeeLeave> getLeaveList() {
-        return leaveList;
-    }
-
-    public void setLeaveList(List<EmployeeLeave> leaveList) {
-        this.leaveList = leaveList;
-    }
+//    public List<EmployeeLeave> getLeaveList() {
+//        return leaveList;
+//    }
+//
+//    public void setLeaveList(List<EmployeeLeave> leaveList) {
+//        this.leaveList = leaveList;
+//    }
 }

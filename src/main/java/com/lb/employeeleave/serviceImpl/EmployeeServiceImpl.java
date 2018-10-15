@@ -1,9 +1,11 @@
 package com.lb.employeeleave.serviceImpl;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
+import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.exceptions.DataConflictException;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
+import com.lb.employeeleave.mapper.EmployeeMapper;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import com.lb.employeeleave.security.JwtUserDetails;
 import com.lb.employeeleave.service.EmployeeService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -34,9 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return List of Employee
      */
     @Override
-    public Page<Employee> getAllEmployees(Pageable pageable) {
-
-        return employeeRepository.findAll(pageable);
+    public Page<EmployeeDTO> getAllEmployees(Pageable pageable) {
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
+        Page<EmployeeDTO> employeeDTOPage = employeePage.map(employee -> EmployeeMapper.convertToDto(employee));
+        return employeeDTOPage;
     }
 
     /**
@@ -45,34 +49,44 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return If present Employee else throws Exception
      */
     @Override
-    public Employee getEmployeeById(Long id) {
-
-        return employeeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
+    public EmployeeDTO getEmployeeById(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if(!employee.isPresent()){
+            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
+        }
+        return EmployeeMapper.convertToDto(employee.get());
     }
 
     @Override
-    public Employee retrieveAuthenticatedEmployee() {
+    public EmployeeDTO retrieveAuthenticatedEmployee() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         long authenticatedEmployeeId = ((JwtUserDetails) authentication.getPrincipal()).getId();
-        return employeeRepository.findById(authenticatedEmployeeId)
-                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
+
+        Optional<Employee> employee = employeeRepository.findById(authenticatedEmployeeId);
+        if(!employee.isPresent()){
+            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
+        }
+        return EmployeeMapper.convertToDto(employee.get());
     }
 
     /**
      * Create New Employee
      * If EmployeeSupervisor id is sent but id doesn't exist in database then throws Exception
-     * @param employee
+     * @param employeeDTO
      * @return saved Employee
      */
     @Override
-    public Employee createEmployee(Employee employee) {
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 
         //  EmployeeSupervisor id is sent but id doesn't exist in database
-        if(employee.getEmployeeSupervisor()!= null && employee.getEmployeeSupervisor().getId()!= null && !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent()){
+        if(employeeDTO.getEmployeeSupervisor()!= null &&
+                employeeDTO.getEmployeeSupervisor().getId()!= null &&
+                !employeeRepository.findById(employeeDTO.getEmployeeSupervisor().getId()).isPresent()){
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
-        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        return employeeRepository.save(employee);
+        employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
+        Employee employee = employeeRepository.save(EmployeeMapper.convertToEntity(employeeDTO));
+        return EmployeeMapper.convertToDto(employee);
     }
 
     /**
@@ -81,42 +95,51 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Employee cannot be their own Supervisor and EmployeeSupervisor id must be present in database else throws Exception
      * Can only update Employee FullName, Email and EmployeeSupervisor
      *
-     * @param employee
+     * @param employeeDTO
      * @return updated Employee
      */
     @Override
-    public Employee updateEmployee(Employee employee) {
+    public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
 
-        Optional<Employee> returnedEmployee = employeeRepository.findById(employee.getId());
+        Optional<Employee> returnedEmployee = employeeRepository.findById(employeeDTO.getId());
         // Employee must be present in database
         if (!returnedEmployee.isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
         }
-        Employee employee1 = returnedEmployee.get();
+        Employee employee = returnedEmployee.get();
         // Employee cannot be their own Supervisor and EmployeeSupervisor must be present in database
-        if ((employee.getEmployeeSupervisor()!= null && employee.getEmployeeSupervisor().getId()!= null) && (employee1.getId() == employee.getEmployeeSupervisor().getId() || !employeeRepository.findById(employee.getEmployeeSupervisor().getId()).isPresent())){
+        if ((employeeDTO.getEmployeeSupervisor()!= null &&
+                employeeDTO.getEmployeeSupervisor().getId()!= null) &&
+                (employee.getId() == employeeDTO.getEmployeeSupervisor().getId()
+                        || !employeeRepository.findById(employeeDTO.getEmployeeSupervisor().getId()).isPresent())){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
-        employee1.setFullName(employee.getFullName());
-        employee1.setUsername(employee.getUsername());
-        employee1.setEmail(employee1.getEmail());
-        employee1.setEmployeeSupervisor(employee.getEmployeeSupervisor());
+        employee.setFullName(employeeDTO.getFullName());
+        employee.setUsername(employeeDTO.getUsername());
+        employee.setEmail(employeeDTO.getEmail());
+        employee.setEmployeeSupervisor(EmployeeMapper.convertToEntity(employeeDTO.getEmployeeSupervisor()));
 
-       return employeeRepository.save(employee1);
+       return EmployeeMapper.convertToDto(employeeRepository.save(employee));
     }
 
     @Override
-    public List<Employee> getAllEmployeeUnderSupervision(Long id) {
+    public List<EmployeeDTO> getAllEmployeeUnderSupervision(Long id) {
         Optional<Employee> returnedEmployee = employeeRepository.findById(id);
         // Employee must be present in database
         if (!returnedEmployee.isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND);
         }
-        return employeeRepository.findAllByEmployeeSupervisor(returnedEmployee.get());
+        List<Employee> employeeList = employeeRepository.findAllByEmployeeSupervisor(returnedEmployee.get());
+        return employeeList
+                .stream()
+                .map(employee -> EmployeeMapper.convertToDto(employee))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<Employee> getAllEmployeesByName(Pageable pageable, String fullName) {
-        return employeeRepository.findByFullNameStartingWithIgnoreCase(pageable, fullName);
+    public Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName) {
+        Page<Employee> employeePage = employeeRepository.findByFullNameStartingWithIgnoreCase(pageable, fullName);
+        Page<EmployeeDTO> employeeDTOPage = employeePage.map(employee -> EmployeeMapper.convertToDto(employee));
+        return employeeDTOPage;
     }
 }

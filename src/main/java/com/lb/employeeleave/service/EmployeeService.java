@@ -1,5 +1,6 @@
 package com.lb.employeeleave.service;
 
+import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,26 +11,26 @@ import java.util.List;
 public interface EmployeeService {
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    Page<Employee> getAllEmployees(Pageable pageable);
+    Page<EmployeeDTO> getAllEmployees(Pageable pageable);
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    Employee retrieveAuthenticatedEmployee();
+    EmployeeDTO retrieveAuthenticatedEmployee();
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    Employee getEmployeeById(Long id);
+    EmployeeDTO getEmployeeById(Long id);
 
     // only allowed to admin
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    Employee createEmployee(Employee employee);
+    EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
 
     // only allowed to admin
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    Employee updateEmployee(Employee employee);
+    EmployeeDTO updateEmployee(EmployeeDTO employeeDTO);
 
     // only allowed to admin
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    List<Employee> getAllEmployeeUnderSupervision(Long id);
+    List<EmployeeDTO> getAllEmployeeUnderSupervision(Long id);
 
     @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-    Page<Employee> getAllEmployeesByName(Pageable pageable, String fullName);
+    Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName);
 }
