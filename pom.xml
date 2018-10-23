@@ -38,8 +38,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
-
-
         <!--<dependency>-->
             <!--<groupId>io.jsonwebtoken</groupId>-->
             <!--<artifactId>jjwt</artifactId>-->
@@ -49,7 +47,7 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-                 <version>2.3.3.RELEASE</version>
+            <version>2.3.4.RELEASE</version>
         </dependency>
 
         <dependency>
