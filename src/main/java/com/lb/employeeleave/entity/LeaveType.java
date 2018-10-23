@@ -1,10 +1,6 @@
 package com.lb.employeeleave.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name="leave_type")
@@ -20,10 +16,6 @@ public class LeaveType {
 
     @Column
     private int status;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "leaveType")
-//    private List<EmployeeLeave> leaveList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,11 +41,4 @@ public class LeaveType {
         this.status = status;
     }
 
-//    public List<EmployeeLeave> getLeaveList() {
-//        return leaveList;
-//    }
-//
-//    public void setLeaveList(List<EmployeeLeave> leaveList) {
-//        this.leaveList = leaveList;
-//    }
 }

@@ -1,7 +1,6 @@
 package com.lb.employeeleave.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +23,6 @@ public class EmployeeDTO {
 
     private int status;
 
-    @JsonIgnoreProperties(value = "employeeSupervisor")
     private EmployeeDTO employeeSupervisor;
 
     public Long getId() {

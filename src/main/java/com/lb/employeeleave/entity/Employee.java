@@ -1,21 +1,13 @@
 package com.lb.employeeleave.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name="employee")
 public class Employee {
-
 
     @Id
     @Column
@@ -35,7 +27,6 @@ public class Employee {
     private String password;
 
     @Column
-//    @Enumerated(EnumType.STRING)
     private String role;
 
     @Column
@@ -45,19 +36,9 @@ public class Employee {
     @Column
     private int status;
 
-//    @JsonIgnoreProperties(value = "employeeSupervisor")
     @OneToOne
     @JoinColumn(name="supervisor_employee")
     private Employee employeeSupervisor;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "employee")
-//    private List<EmployeeLeave> employeeLeaves = new ArrayList<>();
-//
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "reviewedByEmployee")
-//    private List<EmployeeLeave> reviewedEmployeeLeaves = new ArrayList<>();
-
 
     public Long getId() {
         return id;
@@ -131,19 +112,4 @@ public class Employee {
         this.employeeSupervisor = employeeSupervisor;
     }
 
-//    public List<EmployeeLeave> getEmployeeLeaves() {
-//        return employeeLeaves;
-//    }
-//
-//    public void setEmployeeLeaves(List<EmployeeLeave> employeeLeaves) {
-//        this.employeeLeaves = employeeLeaves;
-//    }
-//
-//    public List<EmployeeLeave> getReviewedEmployeeLeaves() {
-//        return reviewedEmployeeLeaves;
-//    }
-//
-//    public void setReviewedEmployeeLeaves(List<EmployeeLeave> reviewedEmployeeLeaves) {
-//        this.reviewedEmployeeLeaves = reviewedEmployeeLeaves;
-//    }
 }
