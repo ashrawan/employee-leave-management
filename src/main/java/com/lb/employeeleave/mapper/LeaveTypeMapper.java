@@ -5,7 +5,7 @@ import com.lb.employeeleave.entity.LeaveType;
 
 public class LeaveTypeMapper {
 
-    public static LeaveTypeDTO convertToDto(LeaveType leaveType) {
+    public static LeaveTypeDTO mapToDto(LeaveType leaveType) {
         LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
         leaveTypeDTO.setId(leaveType.getId());
         leaveTypeDTO.setTypeName(leaveType.getTypeName());
@@ -13,7 +13,7 @@ public class LeaveTypeMapper {
         return leaveTypeDTO;
     }
 
-    public static LeaveType convertToEntity(LeaveTypeDTO leaveTypeDTO) {
+    public static LeaveType mapToEntity(LeaveTypeDTO leaveTypeDTO) {
         LeaveType leaveType = new LeaveType();
         leaveType.setId(leaveTypeDTO.getId());
         leaveType.setTypeName(leaveTypeDTO.getTypeName());

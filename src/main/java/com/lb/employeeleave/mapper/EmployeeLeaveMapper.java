@@ -5,14 +5,14 @@ import com.lb.employeeleave.entity.EmployeeLeave;
 
 public class EmployeeLeaveMapper {
 
-    public static EmployeeLeaveDTO convertToDto(EmployeeLeave employeeLeave){
+    public static EmployeeLeaveDTO mapToDto(EmployeeLeave employeeLeave){
         EmployeeLeaveDTO employeeLeaveDTO = new EmployeeLeaveDTO();
         employeeLeaveDTO.setId(employeeLeave.getId());
         if(employeeLeave.getEmployee() != null) {
-            employeeLeaveDTO.setEmployee(EmployeeMapper.convertToDto(employeeLeave.getEmployee()));
+            employeeLeaveDTO.setEmployee(EmployeeMapper.mapToDto(employeeLeave.getEmployee()));
         }
         if(employeeLeave.getLeaveType() != null) {
-            employeeLeaveDTO.setLeaveType(LeaveTypeMapper.convertToDto(employeeLeave.getLeaveType()));
+            employeeLeaveDTO.setLeaveType(LeaveTypeMapper.mapToDto(employeeLeave.getLeaveType()));
         }
         employeeLeaveDTO.setLeaveReason(employeeLeave.getLeaveReason());
         employeeLeaveDTO.setLeaveDateFrom(employeeLeave.getLeaveDateFrom());
@@ -22,19 +22,19 @@ public class EmployeeLeaveMapper {
         employeeLeaveDTO.setStatus(employeeLeave.getStatus());
         employeeLeaveDTO.setCreatedDateTime(employeeLeave.getCreatedDateTime());
         if(employeeLeave.getReviewedByEmployee() != null) {
-            employeeLeaveDTO.setReviewedByEmployee(EmployeeMapper.convertToDto(employeeLeave.getReviewedByEmployee()));
+            employeeLeaveDTO.setReviewedByEmployee(EmployeeMapper.mapToDto(employeeLeave.getReviewedByEmployee()));
         }
         return employeeLeaveDTO;
     }
 
-    public static EmployeeLeave convertToEntity(EmployeeLeaveDTO employeeLeaveDTO){
+    public static EmployeeLeave mapToEntity(EmployeeLeaveDTO employeeLeaveDTO){
         EmployeeLeave employeeLeave = new EmployeeLeave();
         employeeLeave.setId(employeeLeaveDTO.getId());
         if(employeeLeaveDTO.getEmployee() != null) {
-            employeeLeave.setEmployee(EmployeeMapper.convertToEntity(employeeLeaveDTO.getEmployee()));
+            employeeLeave.setEmployee(EmployeeMapper.mapToEntity(employeeLeaveDTO.getEmployee()));
         }
         if(employeeLeaveDTO.getLeaveType() != null) {
-            employeeLeave.setLeaveType(LeaveTypeMapper.convertToEntity(employeeLeaveDTO.getLeaveType()));
+            employeeLeave.setLeaveType(LeaveTypeMapper.mapToEntity(employeeLeaveDTO.getLeaveType()));
         }
         employeeLeave.setLeaveReason(employeeLeaveDTO.getLeaveReason());
         employeeLeave.setLeaveDateFrom(employeeLeaveDTO.getLeaveDateFrom());
@@ -44,7 +44,7 @@ public class EmployeeLeaveMapper {
         employeeLeave.setStatus(employeeLeaveDTO.getStatus());
         employeeLeave.setCreatedDateTime(employeeLeaveDTO.getCreatedDateTime());
         if(employeeLeaveDTO.getReviewedByEmployee() != null) {
-            employeeLeave.setReviewedByEmployee(EmployeeMapper.convertToEntity(employeeLeaveDTO.getReviewedByEmployee()));
+            employeeLeave.setReviewedByEmployee(EmployeeMapper.mapToEntity(employeeLeaveDTO.getReviewedByEmployee()));
         }
         return employeeLeave;
     }

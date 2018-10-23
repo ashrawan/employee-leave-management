@@ -9,7 +9,6 @@ import com.lb.employeeleave.repository.LeaveTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,10 +26,10 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
      */
     @Override
     public List<LeaveTypeDTO> getAllLeaveTypes() {
-        List<LeaveType> leaveTypeList = leaveTypeRepository.findAll();
-        return leaveTypeList
+
+        return leaveTypeRepository.findAll()
                 .stream()
-                .map((leaveType) -> LeaveTypeMapper.convertToDto(leaveType))
+                .map((leaveType) -> LeaveTypeMapper.mapToDto(leaveType))
                 .collect(Collectors.toList());
     }
 
@@ -41,11 +40,10 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
      */
     @Override
     public LeaveTypeDTO getLeaveTypeById(Long id) {
-        Optional<LeaveType> leaveType = leaveTypeRepository.findById(id);
-        if(!leaveType.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND);
-        }
-        return LeaveTypeMapper.convertToDto(leaveType.get());
+
+        LeaveType leaveType = leaveTypeRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND));
+        return LeaveTypeMapper.mapToDto(leaveType);
     }
 
     /**
@@ -55,8 +53,9 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
      */
     @Override
     public LeaveTypeDTO createLeaveType(LeaveTypeDTO leaveTypeDTO) {
-        LeaveType leaveType = leaveTypeRepository.save(LeaveTypeMapper.convertToEntity(leaveTypeDTO));
-        return LeaveTypeMapper.convertToDto(leaveType);
+
+        LeaveType leaveType = leaveTypeRepository.save(LeaveTypeMapper.mapToEntity(leaveTypeDTO));
+        return LeaveTypeMapper.mapToDto(leaveType);
     }
 
     /**
@@ -67,13 +66,12 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
      */
     @Override
     public LeaveTypeDTO updateLeaveType(LeaveTypeDTO leaveTypeDTO) {
-        Optional<LeaveType> returnedLeaveType = leaveTypeRepository.findById(leaveTypeDTO.getId());
-        if(!returnedLeaveType.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND);
-        }
-        LeaveType leaveType = returnedLeaveType.get();
-        leaveType.setTypeName(leaveTypeDTO.getTypeName());
-        leaveType.setStatus(leaveTypeDTO.getStatus());
-        return LeaveTypeMapper.convertToDto(leaveTypeRepository.save(leaveType));
+
+        LeaveType returnedLeaveType = leaveTypeRepository.findById(leaveTypeDTO.getId())
+                .orElseThrow(()-> new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND));
+
+        returnedLeaveType.setTypeName(leaveTypeDTO.getTypeName());
+        returnedLeaveType.setStatus(leaveTypeDTO.getStatus());
+        return LeaveTypeMapper.mapToDto(leaveTypeRepository.save(returnedLeaveType));
     }
 }

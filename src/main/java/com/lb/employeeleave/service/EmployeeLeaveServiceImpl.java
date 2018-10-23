@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
 
@@ -31,9 +29,9 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      */
     @Override
     public Page<EmployeeLeaveDTO> getAllEmployeeLeaves(Pageable pageable) {
-        Page<EmployeeLeave> employeeLeavePage = employeeLeaveRepository.findAll(pageable);
-        Page<EmployeeLeaveDTO> employeeLeaveDTOPage = employeeLeavePage.map(employeeLeave -> EmployeeLeaveMapper.convertToDto(employeeLeave));
-        return employeeLeaveDTOPage;
+
+        return employeeLeaveRepository.findAll(pageable)
+                .map(employeeLeave -> EmployeeLeaveMapper.mapToDto(employeeLeave));
     }
 
     /**
@@ -43,11 +41,10 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      */
     @Override
     public EmployeeLeaveDTO getEmployeeLeaveById(Long id) {
-        Optional<EmployeeLeave> employeeLeave = employeeLeaveRepository.findById(id);
-        if(!employeeLeave.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
-        }
-        return EmployeeLeaveMapper.convertToDto(employeeLeave.get());
+
+        EmployeeLeave employeeLeave = employeeLeaveRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
+        return EmployeeLeaveMapper.mapToDto(employeeLeave);
     }
 
     /**
@@ -57,8 +54,9 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
      */
     @Override
     public EmployeeLeaveDTO createEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO) {
-        EmployeeLeave employeeLeave = employeeLeaveRepository.save(EmployeeLeaveMapper.convertToEntity(employeeLeaveDTO));
-        return EmployeeLeaveMapper.convertToDto(employeeLeave);
+
+        EmployeeLeave employeeLeave = employeeLeaveRepository.save(EmployeeLeaveMapper.mapToEntity(employeeLeaveDTO));
+        return EmployeeLeaveMapper.mapToDto(employeeLeave);
     }
 
     /**
@@ -71,20 +69,17 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
     @Override
     public EmployeeLeaveDTO updateEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO) {
 
-        Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeaveDTO.getId());
-        // EmployeeLeave Record must be present in database
-        if(!returnedEmployeeLeave.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
-        }
+        EmployeeLeave returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeaveDTO.getId())
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
+
         // EmployeeLeave status must be in pending
-        if(returnedEmployeeLeave.get().getReviewedByEmployee() != null){
+        if(returnedEmployeeLeave.getReviewedByEmployee() != null){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
         }
-        EmployeeLeave employeeLeave1 = returnedEmployeeLeave.get();
-        employeeLeave1.setLeaveDateFrom(employeeLeaveDTO.getLeaveDateFrom());
-        employeeLeave1.setLeaveDateTo(employeeLeaveDTO.getLeaveDateTo());
-        employeeLeave1.setLeaveReason(employeeLeaveDTO.getLeaveReason());
-        return EmployeeLeaveMapper.convertToDto(employeeLeaveRepository.save(employeeLeave1));
+        returnedEmployeeLeave.setLeaveDateFrom(employeeLeaveDTO.getLeaveDateFrom());
+        returnedEmployeeLeave.setLeaveDateTo(employeeLeaveDTO.getLeaveDateTo());
+        returnedEmployeeLeave.setLeaveReason(employeeLeaveDTO.getLeaveReason());
+        return EmployeeLeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
     }
 
     /**
@@ -97,11 +92,8 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
     @Override
     public EmployeeLeaveDTO approveEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO) {
 
-        Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeaveDTO.getId());
-        // EmployeeLeave Record must be present in database
-        if(!returnedEmployeeLeave.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
-        }
+        EmployeeLeave returnedEmployeeLeave = employeeLeaveRepository.findById(employeeLeaveDTO.getId())
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
 
         long approverId = ExtractUserAuthentication.getCurrentUser().getId();
         String approverRole = ExtractUserAuthentication.getCurrentUser().getAuthorities().iterator().next().toString();
@@ -110,22 +102,19 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
         Employee approverEmployee = new Employee();
         approverEmployee.setId(approverId);
 
-        EmployeeLeave employeeLeave1 = returnedEmployeeLeave.get();
-
         // Employee cant approve their own request
         // If employee is user then must be his supervisor
-        if(approverId == employeeLeave1.getEmployee().getId() ||
+        if(approverId == returnedEmployeeLeave.getEmployee().getId() ||
                 (approverRole.equals("ROLE_USER") &&
-                        (employeeLeave1.getEmployee().getEmployeeSupervisor()!= null &&
-                                employeeLeave1.getEmployee().getEmployeeSupervisor().getId()!= null &&
-                                approverId != employeeLeave1.getEmployee().getEmployeeSupervisor().getId()))){
+                        (returnedEmployeeLeave.getEmployee().getEmployeeSupervisor()!= null &&
+                                returnedEmployeeLeave.getEmployee().getEmployeeSupervisor().getId()!= null &&
+                                approverId != returnedEmployeeLeave.getEmployee().getEmployeeSupervisor().getId()))){
             throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
         }
-
-        employeeLeave1.setIsApproved(employeeLeaveDTO.getIsApproved());
-        employeeLeave1.setReviewedByEmployee(approverEmployee);
-        employeeLeave1.setDeniedReason(employeeLeaveDTO.getDeniedReason());
-        return EmployeeLeaveMapper.convertToDto(employeeLeaveRepository.save(employeeLeave1));
+        returnedEmployeeLeave.setIsApproved(employeeLeaveDTO.getIsApproved());
+        returnedEmployeeLeave.setReviewedByEmployee(approverEmployee);
+        returnedEmployeeLeave.setDeniedReason(employeeLeaveDTO.getDeniedReason());
+        return EmployeeLeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
     }
 
     /**
@@ -139,17 +128,14 @@ public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
     @Override
     public EmployeeLeaveDTO ChangeEmployeeLeaveStatus(Long id) {
 
-        Optional<EmployeeLeave> returnedEmployeeLeave = employeeLeaveRepository.findById(id);
-        // EmployeeLeave Record must be present in database
-        if(!returnedEmployeeLeave.isPresent()){
-            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND);
-        }
+        EmployeeLeave returnedEmployeeLeave = employeeLeaveRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
+
         // EmployeeLeave status must be in pending
-        if(returnedEmployeeLeave.get().getReviewedByEmployee() != null){
+        if(returnedEmployeeLeave.getReviewedByEmployee() != null){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
         }
-        EmployeeLeave employeeLeave = returnedEmployeeLeave.get();
-        employeeLeave.setStatus(0);
-        return EmployeeLeaveMapper.convertToDto(employeeLeaveRepository.save(employeeLeave));
+        returnedEmployeeLeave.setStatus(0);
+        return EmployeeLeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
     }
 }
