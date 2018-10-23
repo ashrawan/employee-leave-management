@@ -1,7 +1,6 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.dto.EmployeeDTO;
-import com.lb.employeeleave.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;

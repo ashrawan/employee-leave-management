@@ -1,4 +1,4 @@
-package com.lb.employeeleave.serviceImpl;
+package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.dto.EmployeeLeaveDTO;
@@ -10,7 +10,6 @@ import com.lb.employeeleave.exceptions.UnauthorizedRequest;
 import com.lb.employeeleave.mapper.EmployeeLeaveMapper;
 import com.lb.employeeleave.repository.EmployeeLeaveRepository;
 import com.lb.employeeleave.security.ExtractUserAuthentication;
-import com.lb.employeeleave.service.EmployeeLeaveService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

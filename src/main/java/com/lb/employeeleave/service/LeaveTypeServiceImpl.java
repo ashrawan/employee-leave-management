@@ -1,4 +1,4 @@
-package com.lb.employeeleave.serviceImpl;
+package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.dto.LeaveTypeDTO;
@@ -6,7 +6,6 @@ import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.mapper.LeaveTypeMapper;
 import com.lb.employeeleave.repository.LeaveTypeRepository;
-import com.lb.employeeleave.service.LeaveTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

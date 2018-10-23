@@ -1,4 +1,4 @@
-package com.lb.employeeleave.serviceImpl;
+package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.dto.EmployeeDTO;
@@ -8,7 +8,6 @@ import com.lb.employeeleave.exceptions.DataNotFoundException;
 import com.lb.employeeleave.mapper.EmployeeMapper;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import com.lb.employeeleave.security.JwtUserDetails;
-import com.lb.employeeleave.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
