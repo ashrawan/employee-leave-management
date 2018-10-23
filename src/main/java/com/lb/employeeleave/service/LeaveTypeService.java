@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface LeaveTypeService {
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     List<LeaveTypeDTO> getAllLeaveTypes();
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     LeaveTypeDTO getLeaveTypeById(Long id);
 
     // only admin

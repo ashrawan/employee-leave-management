@@ -7,10 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface EmployeeLeaveService {
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     Page<EmployeeLeaveDTO> getAllEmployeeLeaves(Pageable pageable);
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     EmployeeLeaveDTO getEmployeeLeaveById(Long id);
 
     // only employee can create their own leave request
@@ -22,7 +22,7 @@ public interface EmployeeLeaveService {
     EmployeeLeaveDTO updateEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO);
 
     // only admin and EmployeeSupervisor
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     EmployeeLeaveDTO approveEmployeeLeave(EmployeeLeaveDTO employeeLeaveDTO);
 
     // only employee on their own pending leave request

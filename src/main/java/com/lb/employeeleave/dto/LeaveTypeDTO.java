@@ -1,8 +1,5 @@
 package com.lb.employeeleave.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LeaveTypeDTO {
 
     private Long id;
@@ -10,8 +7,6 @@ public class LeaveTypeDTO {
     private String typeName;
 
     private int status;
-
-    private List<EmployeeLeaveDTO> leaveList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -37,11 +32,5 @@ public class LeaveTypeDTO {
         this.status = status;
     }
 
-    public List<EmployeeLeaveDTO> getLeaveList() {
-        return leaveList;
-    }
 
-    public void setLeaveList(List<EmployeeLeaveDTO> leaveList) {
-        this.leaveList = leaveList;
-    }
 }

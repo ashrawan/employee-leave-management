@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     Page<EmployeeDTO> getAllEmployees(Pageable pageable);
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     EmployeeDTO retrieveAuthenticatedEmployee();
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     EmployeeDTO getEmployeeById(Long id);
 
     // only allowed to admin
@@ -31,6 +31,6 @@ public interface EmployeeService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<EmployeeDTO> getAllEmployeeUnderSupervision(Long id);
 
-    @PreAuthorize ("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName);
 }
