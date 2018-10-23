@@ -1,19 +1,21 @@
 package com.lb.employeeleave.dto;
 
+import com.lb.employeeleave.constant.enums.Status;
+
 public class LeaveTypeDTO {
 
-    private Long id;
+    private Long leaveTypeId;
 
     private String typeName;
 
-    private int status;
+    private Status status;
 
-    public Long getId() {
-        return id;
+    public Long getLeaveTypeId() {
+        return leaveTypeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLeaveTypeId(Long leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
     }
 
     public String getTypeName() {
@@ -24,13 +26,11 @@ public class LeaveTypeDTO {
         this.typeName = typeName;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
-
-
 }

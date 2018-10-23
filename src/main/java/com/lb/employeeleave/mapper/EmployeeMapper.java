@@ -5,41 +5,45 @@ import com.lb.employeeleave.entity.Employee;
 
 public class EmployeeMapper {
 
-    static Boolean employeeSupervisorMapped = false;
+    static Boolean supervisorMapped = false;
 
-    public static EmployeeDTO mapToDto(Employee employee){
+    public static EmployeeDTO mapToDto(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(employee.getId());
+        employeeDTO.setEmployeeId(employee.getEmployeeId());
         employeeDTO.setUsername(employee.getUsername());
-        employeeDTO.setPassword(employee.getPassword());
+//        employeeDTO.setPassword(employee.getPassword());
         employeeDTO.setRole(employee.getRole());
-        employeeDTO.setFullName(employee.getFullName());
+        employeeDTO.setFirstName(employee.getFirstName());
+        employeeDTO.setMiddleName(employee.getMiddleName());
+        employeeDTO.setLastName(employee.getLastName());
         employeeDTO.setEmail(employee.getEmail());
-        employeeDTO.setCreatedDateTime(employee.getCreatedDateTime());
+        employeeDTO.setCreatedAt(employee.getCreatedAt());
         employeeDTO.setStatus(employee.getStatus());
-        if(employee.getEmployeeSupervisor() != null && !employeeSupervisorMapped) {
-            employeeSupervisorMapped = true;
-            employeeDTO.setEmployeeSupervisor(mapToDto(employee.getEmployeeSupervisor()));
+        if (employee.getSupervisor() != null && !supervisorMapped) {
+            supervisorMapped = true;
+            employeeDTO.setSupervisor(mapToDto(employee.getSupervisor()));
         }
-        employeeSupervisorMapped = false;
+        supervisorMapped = false;
         return employeeDTO;
     }
 
-    public static Employee mapToEntity(EmployeeDTO employeeDTO){
+    public static Employee mapToEntity(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        employee.setId(employeeDTO.getId());
+        employee.setEmployeeId(employeeDTO.getEmployeeId());
         employee.setUsername(employeeDTO.getUsername());
         employee.setPassword(employeeDTO.getPassword());
         employee.setRole(employeeDTO.getRole());
-        employee.setFullName(employeeDTO.getFullName());
+        employee.setFirstName(employeeDTO.getFirstName());
+        employee.setMiddleName(employeeDTO.getMiddleName());
+        employee.setLastName(employeeDTO.getLastName());
         employee.setEmail(employeeDTO.getEmail());
-        employee.setCreatedDateTime(employeeDTO.getCreatedDateTime());
+        employee.setCreatedAt(employeeDTO.getCreatedAt());
         employee.setStatus(employeeDTO.getStatus());
-        if(employeeDTO.getEmployeeSupervisor() != null && !employeeSupervisorMapped) {
-            employeeSupervisorMapped = true;
-            employee.setEmployeeSupervisor(mapToEntity(employeeDTO.getEmployeeSupervisor()));
+        if (employeeDTO.getSupervisor() != null && !supervisorMapped) {
+            supervisorMapped = true;
+            employee.setSupervisor(mapToEntity(employeeDTO.getSupervisor()));
         }
-        employeeSupervisorMapped = false;
+        supervisorMapped = false;
         return employee;
     }
 }

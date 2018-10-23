@@ -1,44 +1,66 @@
 package com.lb.employeeleave.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lb.employeeleave.constant.enums.Status;
 
 import java.time.LocalDateTime;
 
 public class EmployeeDTO {
 
-    private Long id;
+    private Long employeeId;
 
-    private String fullName;
+    private String firstName;
+
+    private String middleName;
+
+    private String lastName;
 
     private String email;
 
     private String username;
 
-    @JsonIgnore
     private String password;
 
     private String role;
 
-    private LocalDateTime createdDateTime;
+    private int phoneNumber;
 
-    private int status;
+    private LocalDateTime createdAt;
 
-    private EmployeeDTO employeeSupervisor;
+    private Status status;
 
-    public Long getId() {
-        return id;
+    private EmployeeDTO supervisor;
+
+
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -73,28 +95,35 @@ public class EmployeeDTO {
         this.role = role;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getStatus() {
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public EmployeeDTO getEmployeeSupervisor() {
-        return employeeSupervisor;
+    public EmployeeDTO getSupervisor() {
+        return supervisor;
     }
 
-    public void setEmployeeSupervisor(EmployeeDTO employeeSupervisor) {
-        this.employeeSupervisor = employeeSupervisor;
+    public void setSupervisor(EmployeeDTO supervisor) {
+        this.supervisor = supervisor;
     }
-
 }

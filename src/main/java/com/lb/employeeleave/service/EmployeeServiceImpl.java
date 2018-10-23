@@ -1,6 +1,7 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
+import com.lb.employeeleave.constant.enums.Status;
 import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.exceptions.DataConflictException;
@@ -74,12 +75,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 
         //  EmployeeSupervisor id is sent but id doesn't exist in database
-        if (employeeDTO.getEmployeeSupervisor() != null &&
-                employeeDTO.getEmployeeSupervisor().getId() != null &&
-                !employeeRepository.findById(employeeDTO.getEmployeeSupervisor().getId()).isPresent()) {
+        if (employeeDTO.getSupervisor() != null &&
+                employeeDTO.getSupervisor().getEmployeeId() != null &&
+                !employeeRepository.findById(employeeDTO.getSupervisor().getEmployeeId()).isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
+        if (employeeDTO.getUsername() == null && employeeRepository.findByUsername(employeeDTO.getUsername()) != null){
+           throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_USERNAME_NOT_VALID);
+        }
+        System.out.println("pass " + employeeDTO.getPassword());
         employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
+        employeeDTO.setRole("ROLE_USER");
+        employeeDTO.setStatus(Status.ACTIVE);
         Employee employee = employeeRepository.save(EmployeeMapper.mapToEntity(employeeDTO));
         return EmployeeMapper.mapToDto(employee);
     }
@@ -96,20 +103,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
 
-        Employee returnedEmployee = employeeRepository.findById(employeeDTO.getId())
+        Employee returnedEmployee = employeeRepository.findById(employeeDTO.getEmployeeId())
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
 
         // Employee cannot be their own Supervisor and EmployeeSupervisor must be present in database
-        if ((employeeDTO.getEmployeeSupervisor() != null &&
-                employeeDTO.getEmployeeSupervisor().getId() != null) &&
-                (returnedEmployee.getId() == employeeDTO.getEmployeeSupervisor().getId()
-                        || !employeeRepository.findById(employeeDTO.getEmployeeSupervisor().getId()).isPresent())) {
+        if ((employeeDTO.getSupervisor() != null &&
+                employeeDTO.getSupervisor().getEmployeeId() != null) &&
+                (returnedEmployee.getEmployeeId() == employeeDTO.getSupervisor().getEmployeeId()
+                        || !employeeRepository.findById(employeeDTO.getSupervisor().getEmployeeId()).isPresent())) {
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
-        returnedEmployee.setFullName(employeeDTO.getFullName());
-        returnedEmployee.setUsername(employeeDTO.getUsername());
+        returnedEmployee.setFirstName(employeeDTO.getFirstName());
+        returnedEmployee.setMiddleName(employeeDTO.getMiddleName());
+        returnedEmployee.setLastName(employeeDTO.getLastName());
         returnedEmployee.setEmail(employeeDTO.getEmail());
-        returnedEmployee.setEmployeeSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getEmployeeSupervisor()));
+        returnedEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
+        returnedEmployee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
         return EmployeeMapper.mapToDto(employeeRepository.save(returnedEmployee));
     }
 
@@ -119,7 +128,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee returnedEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
 
-        return employeeRepository.findAllByEmployeeSupervisor(returnedEmployee)
+        return employeeRepository.findAllBySupervisor(returnedEmployee)
                 .stream()
                 .map(employee -> EmployeeMapper.mapToDto(employee))
                 .collect(Collectors.toList());
@@ -128,7 +137,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName) {
 
-        return employeeRepository.findByFullNameStartingWithIgnoreCase(pageable, fullName)
+        return employeeRepository.findByFirstNameStartingWithIgnoreCase(pageable, fullName)
                 .map(employee -> EmployeeMapper.mapToDto(employee));
     }
 }

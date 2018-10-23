@@ -1,5 +1,7 @@
 package com.lb.employeeleave.entity;
 
+import com.lb.employeeleave.constant.enums.Status;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,38 +9,38 @@ import javax.persistence.*;
 public class LeaveType {
 
     @Id
-    @Column
+    @Column(name = "leave_type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long leaveTypeId;
 
-    @Column
+    @Column(name = "type_name", unique = true, nullable = false)
     private String typeName;
 
-    @Column
-    private int status;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
-    public Long getId() {
-        return id;
+    public Long getLeaveTypeId() {
+        return leaveTypeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLeaveTypeId(Long leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
     }
 
     public String getTypeName() {
         return typeName;
     }
 
-    public void setTypeName(String type_name) {
-        this.typeName = type_name;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
-
 }

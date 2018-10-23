@@ -1,7 +1,6 @@
 package com.lb.employeeleave.controller;
 
 import com.lb.employeeleave.dto.LeaveTypeDTO;
-import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.service.LeaveTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

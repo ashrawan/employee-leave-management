@@ -4,9 +4,10 @@ public class ExceptionConstants {
 
     // Employee Exception Constant
     public static String EMPLOYEE_RECORD_NOT_FOUND = "employee doesn't exists";
+    public static String EMPLOYEE_USERNAME_NOT_VALID = "employee username not valid";
     public static String EMPLOYEE_SUPERVISOR_MISMATCH = "employee supervisor mismatch";
 
-    // EmployeeLeave Exception Constant
+    // Leave Exception Constant
     public static String EMPLOYEE_LEAVE_RECORD_NOT_FOUND = "employee leave record not found";
     public static String EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN = "action already taken on this leave request";
 

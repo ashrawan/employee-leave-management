@@ -7,7 +7,7 @@ public class LeaveTypeMapper {
 
     public static LeaveTypeDTO mapToDto(LeaveType leaveType) {
         LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
-        leaveTypeDTO.setId(leaveType.getId());
+        leaveTypeDTO.setLeaveTypeId(leaveType.getLeaveTypeId());
         leaveTypeDTO.setTypeName(leaveType.getTypeName());
         leaveTypeDTO.setStatus(leaveType.getStatus());
         return leaveTypeDTO;
@@ -15,7 +15,7 @@ public class LeaveTypeMapper {
 
     public static LeaveType mapToEntity(LeaveTypeDTO leaveTypeDTO) {
         LeaveType leaveType = new LeaveType();
-        leaveType.setId(leaveTypeDTO.getId());
+        leaveType.setLeaveTypeId(leaveTypeDTO.getLeaveTypeId());
         leaveType.setTypeName(leaveTypeDTO.getTypeName());
         leaveType.setStatus(leaveTypeDTO.getStatus());
         return leaveType;

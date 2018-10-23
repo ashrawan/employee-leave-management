@@ -1,5 +1,6 @@
 package com.lb.employeeleave.entity;
 
+import com.lb.employeeleave.constant.enums.Status;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,50 +11,76 @@ import java.time.LocalDateTime;
 public class Employee {
 
     @Id
-    @Column
+    @Column(name = "employee_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long employeeId;
 
-    @Column
-    private String fullName;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
     private String email;
 
-    @Column(unique = true)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column
+    @Column(name = "role", nullable = false)
     private String role;
 
-    @Column
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    @Column(name = "phone_number")
+    private int phoneNumber;
 
-    @Column
-    private int status;
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;
 
     @OneToOne
-    @JoinColumn(name="supervisor_employee")
-    private Employee employeeSupervisor;
+    @JoinColumn(name="supervisor")
+    private Employee supervisor;
 
-    public Long getId() {
-        return id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -88,28 +115,35 @@ public class Employee {
         this.role = role;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getStatus() {
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Employee getEmployeeSupervisor() {
-        return employeeSupervisor;
+    public Employee getSupervisor() {
+        return supervisor;
     }
 
-    public void setEmployeeSupervisor(Employee employeeSupervisor) {
-        this.employeeSupervisor = employeeSupervisor;
+    public void setSupervisor(Employee supervisor) {
+        this.supervisor = supervisor;
     }
-
 }

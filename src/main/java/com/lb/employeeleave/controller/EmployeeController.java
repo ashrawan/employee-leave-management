@@ -33,7 +33,7 @@ public class EmployeeController {
      * @return List of Employee in JSON format
      */
     @GetMapping
-    public ResponseEntity<?> retrieveAllEmployees(@PageableDefault(page = 0, size = 10, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<?> retrieveAllEmployees(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         LOGGER.info("API Return all Employee´s");
         return new ResponseEntity<>( employeeService.getAllEmployees(pageable), HttpStatus.OK);
