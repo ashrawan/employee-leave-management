@@ -5,8 +5,6 @@ import com.lb.employeeleave.entity.Employee;
 
 public class EmployeeMapper {
 
-    static Boolean supervisorMapped = false;
-
     public static EmployeeDTO mapToDto(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setEmployeeId(employee.getEmployeeId());
@@ -19,11 +17,6 @@ public class EmployeeMapper {
         employeeDTO.setEmail(employee.getEmail());
         employeeDTO.setCreatedAt(employee.getCreatedAt());
         employeeDTO.setStatus(employee.getStatus());
-        if (employee.getSupervisor() != null && !supervisorMapped) {
-            supervisorMapped = true;
-            employeeDTO.setSupervisor(mapToDto(employee.getSupervisor()));
-        }
-        supervisorMapped = false;
         return employeeDTO;
     }
 
@@ -39,11 +32,22 @@ public class EmployeeMapper {
         employee.setEmail(employeeDTO.getEmail());
         employee.setCreatedAt(employeeDTO.getCreatedAt());
         employee.setStatus(employeeDTO.getStatus());
-        if (employeeDTO.getSupervisor() != null && !supervisorMapped) {
-            supervisorMapped = true;
-            employee.setSupervisor(mapToEntity(employeeDTO.getSupervisor()));
+        return employee;
+    }
+
+    public static EmployeeDTO mapToDTOWithSupervisor(Employee employee) {
+        EmployeeDTO employeeDTO = mapToDto(employee);
+        if (employee.getSupervisor() != null) {
+            employeeDTO.setSupervisor(EmployeeMapper.mapToDto(employee.getSupervisor()));
         }
-        supervisorMapped = false;
+        return employeeDTO;
+    }
+
+    public static Employee mapToEntityWithSupervisor(EmployeeDTO employeeDTO) {
+        Employee employee = mapToEntity(employeeDTO);
+        if (employeeDTO.getSupervisor() != null) {
+            employee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
+        }
         return employee;
     }
 }

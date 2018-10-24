@@ -1,10 +1,11 @@
 package com.lb.employeeleave.entity;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.EmployeeStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name="employee")
@@ -45,9 +46,9 @@ public class Employee {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
+    private EmployeeStatus status = EmployeeStatus.PENDING;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="supervisor")
     private Employee supervisor;
 
@@ -131,11 +132,11 @@ public class Employee {
         this.createdAt = createdAt;
     }
 
-    public Status getStatus() {
+    public EmployeeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(EmployeeStatus status) {
         this.status = status;
     }
 
@@ -145,5 +146,29 @@ public class Employee {
 
     public void setSupervisor(Employee supervisor) {
         this.supervisor = supervisor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return phoneNumber == employee.phoneNumber &&
+                Objects.equals(employeeId, employee.employeeId) &&
+                Objects.equals(firstName, employee.firstName) &&
+                Objects.equals(middleName, employee.middleName) &&
+                Objects.equals(lastName, employee.lastName) &&
+                Objects.equals(email, employee.email) &&
+                Objects.equals(username, employee.username) &&
+                Objects.equals(password, employee.password) &&
+                Objects.equals(role, employee.role) &&
+                Objects.equals(createdAt, employee.createdAt) &&
+                status == employee.status &&
+                Objects.equals(supervisor, employee.supervisor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, firstName, middleName, lastName, email, username, password, role, phoneNumber, createdAt, status, supervisor);
     }
 }

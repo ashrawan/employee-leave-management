@@ -1,6 +1,6 @@
 package com.lb.employeeleave.security;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.EmployeeStatus;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Employee employee = employeeRepository.findByUsernameAndStatus(username, Status.ACTIVE);
+        Employee employee = employeeRepository.findByUsernameAndStatus(username, EmployeeStatus.ACTIVE);
         if (employee == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }

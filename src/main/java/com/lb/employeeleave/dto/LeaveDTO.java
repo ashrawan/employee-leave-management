@@ -1,6 +1,6 @@
 package com.lb.employeeleave.dto;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.LeaveStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +23,7 @@ public class LeaveDTO {
 
     private String deniedReason;
 
-    private Status status;
+    private LeaveStatus status;
 
     private LocalDateTime createdAt;
 
@@ -93,11 +93,11 @@ public class LeaveDTO {
         this.deniedReason = deniedReason;
     }
 
-    public Status getStatus() {
+    public LeaveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(LeaveStatus status) {
         this.status = status;
     }
 

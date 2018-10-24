@@ -1,8 +1,9 @@
 package com.lb.employeeleave.entity;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.LeaveTypeStatus;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name="leave_type")
@@ -18,7 +19,7 @@ public class LeaveType {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status = Status.ACTIVE;
+    private LeaveTypeStatus status = LeaveTypeStatus.ACTIVE;
 
     public Long getLeaveTypeId() {
         return leaveTypeId;
@@ -36,11 +37,26 @@ public class LeaveType {
         this.typeName = typeName;
     }
 
-    public Status getStatus() {
+    public LeaveTypeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(LeaveTypeStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LeaveType leaveType = (LeaveType) o;
+        return Objects.equals(leaveTypeId, leaveType.leaveTypeId) &&
+                Objects.equals(typeName, leaveType.typeName) &&
+                status == leaveType.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(leaveTypeId, typeName, status);
     }
 }

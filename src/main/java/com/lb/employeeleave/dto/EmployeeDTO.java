@@ -1,6 +1,6 @@
 package com.lb.employeeleave.dto;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.EmployeeStatus;
 
 import java.time.LocalDateTime;
 
@@ -26,10 +26,9 @@ public class EmployeeDTO {
 
     private LocalDateTime createdAt;
 
-    private Status status;
+    private EmployeeStatus status;
 
     private EmployeeDTO supervisor;
-
 
     public Long getEmployeeId() {
         return employeeId;
@@ -111,11 +110,11 @@ public class EmployeeDTO {
         this.createdAt = createdAt;
     }
 
-    public Status getStatus() {
+    public EmployeeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(EmployeeStatus status) {
         this.status = status;
     }
 

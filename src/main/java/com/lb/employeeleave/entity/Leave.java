@@ -1,16 +1,17 @@
 package com.lb.employeeleave.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.LeaveStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name="employee_leave")
+@Table(name="leave_request")
 public class Leave {
 
     @Id
@@ -47,7 +48,7 @@ public class Leave {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
+    private LeaveStatus status = LeaveStatus.PENDING;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at", nullable = false)
@@ -122,11 +123,11 @@ public class Leave {
         this.deniedReason = deniedReason;
     }
 
-    public Status getStatus() {
+    public LeaveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(LeaveStatus status) {
         this.status = status;
     }
 
@@ -144,5 +145,28 @@ public class Leave {
 
     public void setReviewedBy(Employee reviewedBy) {
         this.reviewedBy = reviewedBy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Leave leave = (Leave) o;
+        return approved == leave.approved &&
+                Objects.equals(leaveId, leave.leaveId) &&
+                Objects.equals(employee, leave.employee) &&
+                Objects.equals(leaveType, leave.leaveType) &&
+                Objects.equals(leaveReason, leave.leaveReason) &&
+                Objects.equals(fromDate, leave.fromDate) &&
+                Objects.equals(toDate, leave.toDate) &&
+                Objects.equals(deniedReason, leave.deniedReason) &&
+                status == leave.status &&
+                Objects.equals(createdAt, leave.createdAt) &&
+                Objects.equals(reviewedBy, leave.reviewedBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(leaveId, employee, leaveType, leaveReason, fromDate, toDate, approved, deniedReason, status, createdAt, reviewedBy);
     }
 }

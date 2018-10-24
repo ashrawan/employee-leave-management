@@ -1,7 +1,7 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.EmployeeStatus;
 import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.exceptions.DataConflictException;
@@ -38,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Page<EmployeeDTO> getAllEmployees(Pageable pageable) {
 
         return employeeRepository.findAll(pageable)
-                .map(employee -> EmployeeMapper.mapToDto(employee));
+                .map(employee -> EmployeeMapper.mapToDTOWithSupervisor(employee));
     }
 
     /**
@@ -52,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
-        return EmployeeMapper.mapToDto(employee);
+        return EmployeeMapper.mapToDTOWithSupervisor(employee);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         long authenticatedEmployeeId = ExtractUserAuthentication.getCurrentUser().getId();
         Employee employee = employeeRepository.findById(authenticatedEmployeeId)
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
-        return EmployeeMapper.mapToDto(employee);
+        return EmployeeMapper.mapToDTOWithSupervisor(employee);
     }
 
     /**
@@ -80,14 +80,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 !employeeRepository.findById(employeeDTO.getSupervisor().getEmployeeId()).isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
-        if (employeeDTO.getUsername() == null && employeeRepository.findByUsername(employeeDTO.getUsername()) != null){
+        if (employeeDTO.getUsername() == null || employeeRepository.findByUsername(employeeDTO.getUsername()) != null){
            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_USERNAME_NOT_VALID);
         }
-        System.out.println("pass " + employeeDTO.getPassword());
         employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         employeeDTO.setRole("ROLE_USER");
-        employeeDTO.setStatus(Status.ACTIVE);
-        Employee employee = employeeRepository.save(EmployeeMapper.mapToEntity(employeeDTO));
+        employeeDTO.setPhoneNumber(employeeDTO.getPhoneNumber());
+        employeeDTO.setStatus(EmployeeStatus.ACTIVE);
+        Employee employee = employeeRepository.save(EmployeeMapper.mapToEntityWithSupervisor(employeeDTO));
         return EmployeeMapper.mapToDto(employee);
     }
 

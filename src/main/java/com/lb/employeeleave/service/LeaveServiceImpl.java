@@ -1,7 +1,7 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.LeaveStatus;
 import com.lb.employeeleave.dto.LeaveDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.entity.Leave;
@@ -56,7 +56,7 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public LeaveDTO createEmployeeLeave(LeaveDTO leaveDTO) {
 
-        leaveDTO.setStatus(Status.PENDING);
+        leaveDTO.setStatus(LeaveStatus.PENDING);
         Leave employeeLeave = employeeLeaveRepository.save(LeaveMapper.mapToEntity(leaveDTO));
         return LeaveMapper.mapToDto(employeeLeave);
     }
@@ -114,6 +114,7 @@ public class LeaveServiceImpl implements LeaveService {
             throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
         }
         returnedEmployeeLeave.setApproved(leaveDTO.isApproved());
+        returnedEmployeeLeave.setStatus(LeaveStatus.ACTIVE);
         returnedEmployeeLeave.setReviewedBy(approverEmployee);
         returnedEmployeeLeave.setDeniedReason(leaveDTO.getDeniedReason());
         return LeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
@@ -137,7 +138,7 @@ public class LeaveServiceImpl implements LeaveService {
         if(returnedEmployeeLeave.getReviewedBy() != null){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
         }
-        returnedEmployeeLeave.setStatus(Status.DELETED);
+        returnedEmployeeLeave.setStatus(LeaveStatus.INACTIVE);
         return LeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
     }
 }

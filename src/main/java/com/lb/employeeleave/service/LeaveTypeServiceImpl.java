@@ -1,7 +1,7 @@
 package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.LeaveTypeStatus;
 import com.lb.employeeleave.dto.LeaveTypeDTO;
 import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.exceptions.DataNotFoundException;
@@ -55,7 +55,10 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
     @Override
     public LeaveTypeDTO createLeaveType(LeaveTypeDTO leaveTypeDTO) {
 
-        leaveTypeDTO.setStatus(Status.ACTIVE);
+        if (leaveTypeDTO.getTypeName() == null || leaveTypeRepository.findByTypeName(leaveTypeDTO.getTypeName()) != null){
+            throw new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_NAME_NOT_VALID);
+        }
+        leaveTypeDTO.setStatus(LeaveTypeStatus.ACTIVE);
         LeaveType leaveType = leaveTypeRepository.save(LeaveTypeMapper.mapToEntity(leaveTypeDTO));
         return LeaveTypeMapper.mapToDto(leaveType);
     }

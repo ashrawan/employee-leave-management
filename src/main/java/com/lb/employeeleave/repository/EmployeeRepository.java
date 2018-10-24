@@ -1,6 +1,6 @@
 package com.lb.employeeleave.repository;
 
-import com.lb.employeeleave.constant.enums.Status;
+import com.lb.employeeleave.constant.enums.EmployeeStatus;
 import com.lb.employeeleave.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Employee findByUsername(String username);
 
-    Employee findByUsernameAndStatus(String username, Status status);
+    Employee findByUsernameAndStatus(String username, EmployeeStatus status);
 
     // All employee under supervision of given employee
     List<Employee> findAllBySupervisor(Employee employee);

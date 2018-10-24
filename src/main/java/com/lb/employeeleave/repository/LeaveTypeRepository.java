@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LeaveTypeRepository extends JpaRepository<LeaveType, Long> {
+
+    LeaveType findByTypeName(String typeName);
 }
