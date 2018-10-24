@@ -2,6 +2,7 @@ package com.lb.employeeleave.service;
 
 import com.lb.employeeleave.constant.ExceptionConstants;
 import com.lb.employeeleave.constant.enums.LeaveStatus;
+import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.dto.LeaveDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.entity.Leave;
@@ -56,6 +57,15 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public LeaveDTO createEmployeeLeave(LeaveDTO leaveDTO) {
 
+        if(leaveDTO.getLeaveTypeDTO() == null){
+            throw new DataNotFoundException(ExceptionConstants.LEAVE_TYPE_RECORD_NOT_FOUND);
+        }
+        // Setting current employee id on current newly created Leave Request
+        long employeeId = ExtractUserAuthentication.getCurrentUser().getId();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEmployeeId(employeeId);
+
+        leaveDTO.setEmployeeDTO(employeeDTO);
         leaveDTO.setStatus(LeaveStatus.PENDING);
         Leave employeeLeave = employeeLeaveRepository.save(LeaveMapper.mapToEntity(leaveDTO));
         return LeaveMapper.mapToDto(employeeLeave);

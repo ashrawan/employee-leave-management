@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/employee-leaves")
-public class EmployeeLeaveController {
+public class LeaveController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeLeaveController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LeaveController.class);
 
     private final LeaveService employeeLeaveService;
 
-    public EmployeeLeaveController(final LeaveService employeeLeaveService) {
+    public LeaveController(final LeaveService employeeLeaveService) {
         this.employeeLeaveService = employeeLeaveService;
     }
 
@@ -64,10 +64,10 @@ public class EmployeeLeaveController {
      * @return Created Leave in JSON format
      */
     @PostMapping
-    public ResponseEntity<?> createEmployeeLeave(@RequestBody LeaveDTO employeeLeaveDTO){
+    public ResponseEntity<?> createEmployeeLeave(@RequestBody LeaveDTO leaveDTO){
 
         LOGGER.info("API Create Leave Request");
-        return new ResponseEntity<>(employeeLeaveService.createEmployeeLeave(employeeLeaveDTO), HttpStatus.OK);
+        return new ResponseEntity<>(employeeLeaveService.createEmployeeLeave(leaveDTO), HttpStatus.OK);
     }
 
     /**
@@ -75,14 +75,14 @@ public class EmployeeLeaveController {
      * Http put method must be specified
      * Url must be set on - server-url/base-path/employee-leave/{id}
      *
-     * @param employeeLeaveDTO JSON data specifying Leave to update
+     * @param leaveDTO JSON data specifying Leave to update
      * @return Updated Leave in JSON format
      */
     @PutMapping
-    public ResponseEntity<?> updateEmployeeLeave(@RequestBody LeaveDTO employeeLeaveDTO){
+    public ResponseEntity<?> updateEmployeeLeave(@RequestBody LeaveDTO leaveDTO){
 
         LOGGER.info("API update Leave");
-        return new ResponseEntity<>(employeeLeaveService.updateEmployeeLeave(employeeLeaveDTO), HttpStatus.OK);
+        return new ResponseEntity<>(employeeLeaveService.updateEmployeeLeave(leaveDTO), HttpStatus.OK);
     }
 
     /**
@@ -90,14 +90,14 @@ public class EmployeeLeaveController {
      * Http Put method must be specified
      * Url must be set on - server-url/base-path/approve-employee-leave
      *
-     * @param employeeLeaveDTO JSON data specifying Leave to approve
+     * @param leaveDTO JSON data specifying Leave to approve
      * @return Approved Leave in JSON format
      */
     @PutMapping("/approve-employee-leave")
-    public ResponseEntity<?> approveEmployeeLeave(@RequestBody LeaveDTO employeeLeaveDTO){
+    public ResponseEntity<?> approveEmployeeLeave(@RequestBody LeaveDTO leaveDTO){
 
         LOGGER.info("API Approve Leave");
-        return new ResponseEntity<>(employeeLeaveService.approveEmployeeLeave(employeeLeaveDTO), HttpStatus.OK);
+        return new ResponseEntity<>(employeeLeaveService.approveEmployeeLeave(leaveDTO), HttpStatus.OK);
     }
 
     /**

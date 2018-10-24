@@ -13,17 +13,16 @@ public interface LeaveService {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     LeaveDTO getEmployeeLeaveById(Long id);
 
-    // only employee can create their own leave request
-    @PreAuthorize("#employeeLeaveDTO.employee.employeeId == authentication.principal.id ")
-    LeaveDTO createEmployeeLeave(LeaveDTO employeeLeaveDTO);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    LeaveDTO createEmployeeLeave(LeaveDTO leaveDTO);
 
     // only employee if leave request is still pending
-    @PreAuthorize("#employeeLeaveDTO.employee.employeeId == authentication.principal.id ")
-    LeaveDTO updateEmployeeLeave(LeaveDTO employeeLeaveDTO);
+    @PreAuthorize("#leaveDTO.employeeDTO.employeeId == authentication.principal.id ")
+    LeaveDTO updateEmployeeLeave(LeaveDTO leaveDTO);
 
     // only admin and EmployeeSupervisor
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    LeaveDTO approveEmployeeLeave(LeaveDTO employeeLeaveDTO);
+    LeaveDTO approveEmployeeLeave(LeaveDTO leaveDTO);
 
     // only employee on their own pending leave request
     @PreAuthorize("#id == authentication.principal.id ")
