@@ -15,6 +15,7 @@ public class EmployeeMapper {
         employeeDTO.setMiddleName(employee.getMiddleName());
         employeeDTO.setLastName(employee.getLastName());
         employeeDTO.setEmail(employee.getEmail());
+        employeeDTO.setPhoneNumber((employee.getPhoneNumber()));
         employeeDTO.setCreatedAt(employee.getCreatedAt());
         employeeDTO.setStatus(employee.getStatus());
         return employeeDTO;
@@ -30,6 +31,7 @@ public class EmployeeMapper {
         employee.setMiddleName(employeeDTO.getMiddleName());
         employee.setLastName(employeeDTO.getLastName());
         employee.setEmail(employeeDTO.getEmail());
+        employee.setPhoneNumber(employeeDTO.getPhoneNumber());
         employee.setCreatedAt(employeeDTO.getCreatedAt());
         employee.setStatus(employeeDTO.getStatus());
         return employee;

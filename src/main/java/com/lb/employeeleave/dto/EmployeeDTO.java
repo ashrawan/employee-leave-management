@@ -22,7 +22,7 @@ public class EmployeeDTO {
 
     private String role;
 
-    private int phoneNumber;
+    private String phoneNumber;
 
     private LocalDateTime createdAt;
 
@@ -94,11 +94,11 @@ public class EmployeeDTO {
         this.role = role;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

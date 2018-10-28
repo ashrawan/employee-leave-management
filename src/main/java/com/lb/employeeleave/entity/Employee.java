@@ -22,7 +22,7 @@ public class Employee {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "email")
@@ -37,8 +37,8 @@ public class Employee {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "phone_number")
-    private int phoneNumber;
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -116,11 +116,11 @@ public class Employee {
         this.role = role;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -153,8 +153,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return phoneNumber == employee.phoneNumber &&
-                Objects.equals(employeeId, employee.employeeId) &&
+        return Objects.equals(employeeId, employee.employeeId) &&
                 Objects.equals(firstName, employee.firstName) &&
                 Objects.equals(middleName, employee.middleName) &&
                 Objects.equals(lastName, employee.lastName) &&
@@ -162,6 +161,7 @@ public class Employee {
                 Objects.equals(username, employee.username) &&
                 Objects.equals(password, employee.password) &&
                 Objects.equals(role, employee.role) &&
+                Objects.equals(phoneNumber, employee.phoneNumber) &&
                 Objects.equals(createdAt, employee.createdAt) &&
                 status == employee.status &&
                 Objects.equals(supervisor, employee.supervisor);

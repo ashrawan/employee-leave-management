@@ -80,8 +80,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 !employeeRepository.findById(employeeDTO.getSupervisor().getEmployeeId()).isPresent()) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_SUPERVISOR_MISMATCH);
         }
-        if (employeeDTO.getUsername() == null || employeeRepository.findByUsername(employeeDTO.getUsername()) != null){
-           throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_USERNAME_NOT_VALID);
+        if (employeeDTO.getUsername() == null || employeeRepository.findByUsername(employeeDTO.getUsername()) != null) {
+            throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_USERNAME_NOT_VALID);
         }
         employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         employeeDTO.setRole("ROLE_USER");
@@ -118,7 +118,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         returnedEmployee.setLastName(employeeDTO.getLastName());
         returnedEmployee.setEmail(employeeDTO.getEmail());
         returnedEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
-        returnedEmployee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
+        if (employeeDTO.getSupervisor() != null) {
+            returnedEmployee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
+        }
         return EmployeeMapper.mapToDto(employeeRepository.save(returnedEmployee));
     }
 
