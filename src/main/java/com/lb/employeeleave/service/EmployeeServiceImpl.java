@@ -120,6 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         returnedEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
         if (employeeDTO.getSupervisor() != null) {
             returnedEmployee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
+        }else {
+            returnedEmployee.setSupervisor(null);
         }
         return EmployeeMapper.mapToDto(employeeRepository.save(returnedEmployee));
     }

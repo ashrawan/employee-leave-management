@@ -45,7 +45,7 @@ public class ExceptionHandlerController {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setCallerUrl(request.getRequestURI());
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
 }
