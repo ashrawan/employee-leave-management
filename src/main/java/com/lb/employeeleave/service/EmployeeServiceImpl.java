@@ -83,6 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeDTO.getUsername() == null || employeeRepository.findByUsername(employeeDTO.getUsername()) != null) {
             throw new DataNotFoundException(ExceptionConstants.EMPLOYEE_USERNAME_NOT_VALID);
         }
+
         employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         employeeDTO.setRole("ROLE_USER");
         employeeDTO.setPhoneNumber(employeeDTO.getPhoneNumber());
@@ -120,10 +121,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         returnedEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
         if (employeeDTO.getSupervisor() != null) {
             returnedEmployee.setSupervisor(EmployeeMapper.mapToEntity(employeeDTO.getSupervisor()));
-        }else {
+        } else {
             returnedEmployee.setSupervisor(null);
         }
         return EmployeeMapper.mapToDto(employeeRepository.save(returnedEmployee));
+    }
+
+    @Override
+    public EmployeeDTO updatePassword(String oldPassword, String newPassword) {
+
+        long authenticatedEmployeeId = ExtractUserAuthentication.getCurrentUser().getId();
+        Employee employee = employeeRepository.findById(authenticatedEmployeeId)
+                .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_RECORD_NOT_FOUND));
+        if (!passwordEncoder.matches(oldPassword, employee.getPassword())) {
+            throw new DataNotFoundException(ExceptionConstants.OLD_PASSWORD_DOESNT_MATCH);
+        }
+        employee.setPassword(passwordEncoder.encode(newPassword));
+        return EmployeeMapper.mapToDto(employeeRepository.save(employee));
     }
 
     @Override

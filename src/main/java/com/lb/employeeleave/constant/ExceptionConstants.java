@@ -5,6 +5,7 @@ public class ExceptionConstants {
     // Employee Exception Constant
     public static final String EMPLOYEE_RECORD_NOT_FOUND = "Employee doesn't exists";
     public static final String EMPLOYEE_USERNAME_NOT_VALID = "Employee username not valid";
+    public static final String OLD_PASSWORD_DOESNT_MATCH = "Old Password Doesnt Match";
     public static final String EMPLOYEE_SUPERVISOR_MISMATCH = "Employee supervisor mismatch";
 
     // Leave Exception Constant

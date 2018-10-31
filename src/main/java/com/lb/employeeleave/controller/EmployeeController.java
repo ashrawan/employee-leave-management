@@ -36,7 +36,7 @@ public class EmployeeController {
     public ResponseEntity<?> retrieveAllEmployees(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         LOGGER.info("API Return all Employee´s");
-        return new ResponseEntity<>( employeeService.getAllEmployees(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.getAllEmployees(pageable), HttpStatus.OK);
     }
 
 
@@ -103,6 +103,13 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.updateEmployee(employeeDTO), HttpStatus.OK);
     }
 
+    @PutMapping("/update-password")
+    public ResponseEntity<?> updatePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+
+        LOGGER.info("API Updating Employee Password");
+        return new ResponseEntity<>(employeeService.updatePassword(oldPassword, newPassword), HttpStatus.OK);
+    }
+
     /**
      * Retrieve all Employees under supervision.
      * Http Get method must be specified.
@@ -130,10 +137,10 @@ public class EmployeeController {
      * @return Employee matching fullname
      */
     @GetMapping("/employee-by-fullname")
-    public ResponseEntity<?> retrieveAllEmployeesByFullName(@PageableDefault(page = 0, size = 10) Pageable pageable,@RequestParam("fullname") String fullname) {
+    public ResponseEntity<?> retrieveAllEmployeesByFullName(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam("fullname") String fullname) {
 
         LOGGER.info("API Return Employee´s By FullName");
-        return new ResponseEntity<>( employeeService.getAllEmployeesByName(pageable, fullname).getContent(), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.getAllEmployeesByName(pageable, fullname).getContent(), HttpStatus.OK);
     }
 
 }

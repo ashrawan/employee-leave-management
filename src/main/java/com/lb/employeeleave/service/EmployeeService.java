@@ -26,10 +26,13 @@ public interface EmployeeService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     EmployeeDTO updateEmployee(EmployeeDTO employeeDTO);
 
-    // only allowed to admin
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    EmployeeDTO updatePassword(String oldPassword, String newPassword);
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     List<EmployeeDTO> getAllEmployeeUnderSupervision(Long id);
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName);
+
 }
