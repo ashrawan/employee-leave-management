@@ -34,9 +34,9 @@ Manual process:
 
 #### SPECIFICATIONS
 
-- Backend: Spring
-- Frontend: React
-- Tools: ( Intellij IDE, VS Code IDE, Mariadb, MySQL Workbench )
+- Backend: Spring Boot 2.0
+- Frontend: Angular 6
+- Tools: ( IDE -> Intellij and VS Code, Mariadb, MySQL Workbench )
 
 CLASS DIAGRAM
 
@@ -47,4 +47,4 @@ CLASS DIAGRAM
  
  Github Link:
 - [x] Backend: https://github.com/ashrawan/employee-leave-management
-- [ ] Frontend: https://github.com/ashrawan/employee-leave-react
+- [ ] Frontend: https://github.com/ashrawan/leave-management-angular
