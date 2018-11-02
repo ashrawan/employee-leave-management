@@ -21,4 +21,7 @@ public interface LeaveTypeService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     LeaveTypeDTO updateLeaveType(LeaveTypeDTO leaveTypeDTO);
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    List<LeaveTypeDTO> searchOnLeaveType(String typeName);
+
 }

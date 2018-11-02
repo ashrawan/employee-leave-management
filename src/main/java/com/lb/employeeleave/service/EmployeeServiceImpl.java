@@ -155,7 +155,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName) {
 
-        return employeeRepository.findByFirstNameStartingWithIgnoreCase(pageable, fullName)
+        return employeeRepository.findByFirstNameContainingOrMiddleNameContainingOrLastNameContaining(pageable, fullName, fullName, fullName)
                 .map(employee -> EmployeeMapper.mapToDto(employee));
     }
 }

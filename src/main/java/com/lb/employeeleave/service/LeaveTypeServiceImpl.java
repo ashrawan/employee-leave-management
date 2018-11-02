@@ -79,4 +79,12 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
         returnedLeaveType.setStatus(leaveTypeDTO.getStatus());
         return LeaveTypeMapper.mapToDto(leaveTypeRepository.save(returnedLeaveType));
     }
+
+    @Override
+    public List<LeaveTypeDTO> searchOnLeaveType(String q) {
+        return leaveTypeRepository.findAllByTypeNameContaining(q)
+                .stream()
+                .map((leaveType -> LeaveTypeMapper.mapToDto(leaveType)))
+                .collect(Collectors.toList());
+    }
 }

@@ -22,5 +22,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // All employee under supervision of given employee
     List<Employee> findAllBySupervisor(Employee employee);
 
-    Page<Employee> findByFirstNameStartingWithIgnoreCase(Pageable pageable, String fullName);
+    Page<Employee> findByFirstNameContainingOrMiddleNameContainingOrLastNameContaining(Pageable pageable, String firstName, String middleName, String lastName);
 }
