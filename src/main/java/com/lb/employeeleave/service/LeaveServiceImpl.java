@@ -106,6 +106,7 @@ public class LeaveServiceImpl implements LeaveService {
 
         Leave returnedEmployeeLeave = employeeLeaveRepository.findById(leaveDTO.getLeaveId())
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
+        Employee employeeSupervisor = returnedEmployeeLeave.getEmployee().getSupervisor();
 
         long approverId = ExtractUserAuthentication.getCurrentUser().getId();
         String approverRole = ExtractUserAuthentication.getCurrentUser().getAuthorities().iterator().next().toString();
@@ -116,12 +117,14 @@ public class LeaveServiceImpl implements LeaveService {
 
         // Employee cant approve their own request
         // If employee is user then must be his supervisor
-        if(approverId == returnedEmployeeLeave.getEmployee().getEmployeeId() ||
-                (approverRole.equals("ROLE_USER") &&
-                        (returnedEmployeeLeave.getEmployee().getSupervisor()!= null &&
-                                returnedEmployeeLeave.getEmployee().getSupervisor().getEmployeeId()!= null &&
-                                approverId != returnedEmployeeLeave.getEmployee().getSupervisor().getEmployeeId()))){
-            throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
+        if(!approverRole.equals("ROLE_ADMIN") || approverId == returnedEmployeeLeave.getEmployee().getEmployeeId()){
+
+            if(approverId == returnedEmployeeLeave.getEmployee().getEmployeeId() ||
+                    employeeSupervisor == null || employeeSupervisor.getEmployeeId() == null ||
+                    approverId != employeeSupervisor.getEmployeeId()){
+                throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
+            }
+//            throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
         }
         returnedEmployeeLeave.setApproved(leaveDTO.isApproved());
         returnedEmployeeLeave.setStatus(LeaveStatus.ACTIVE);
