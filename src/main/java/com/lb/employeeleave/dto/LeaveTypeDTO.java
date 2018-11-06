@@ -1,6 +1,6 @@
 package com.lb.employeeleave.dto;
 
-import com.lb.employeeleave.constant.enums.LeaveTypeStatus;
+import com.lb.employeeleave.util.enums.LeaveTypeStatus;
 
 public class LeaveTypeDTO {
 

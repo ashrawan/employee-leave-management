@@ -7,9 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/rest/employee-leaves")
@@ -60,7 +64,7 @@ public class LeaveController {
      * Url must be set on - server-url/base-path/employee-leave
      * The data is returned in JSON format
      *
-     * @param employeeLeaveDTO json data specifying Leave request to add
+     * @param leaveDTO json data specifying Leave request to add
      * @return Created Leave in JSON format
      */
     @PostMapping
@@ -113,5 +117,13 @@ public class LeaveController {
 
         LOGGER.info("API Delete Pending Leave Request");
         return new ResponseEntity<>(employeeLeaveService.ChangeEmployeeLeaveStatus(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/byDate")
+    public ResponseEntity<?> retrieveEmployeeLeaveByDate(
+            @RequestParam("date1") String date1,
+            @RequestParam("date2") String date2){
+        LOGGER.info("API Retrieve Leave By Date");
+        return new ResponseEntity<>(employeeLeaveService.retrieveEmployeeLeaveByDate(date1, date2), HttpStatus.OK);
     }
 }

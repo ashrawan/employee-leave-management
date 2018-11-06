@@ -1,7 +1,7 @@
 package com.lb.employeeleave.service;
 
-import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.LeaveTypeStatus;
+import com.lb.employeeleave.util.ExceptionConstants;
+import com.lb.employeeleave.util.enums.LeaveTypeStatus;
 import com.lb.employeeleave.dto.LeaveTypeDTO;
 import com.lb.employeeleave.entity.LeaveType;
 import com.lb.employeeleave.exceptions.DataNotFoundException;

@@ -1,6 +1,6 @@
 package com.lb.employeeleave.security;
 
-import com.lb.employeeleave.constant.enums.EmployeeStatus;
+import com.lb.employeeleave.util.enums.EmployeeStatus;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

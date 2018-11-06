@@ -1,6 +1,6 @@
 package com.lb.employeeleave.entity;
 
-import com.lb.employeeleave.constant.enums.EmployeeStatus;
+import com.lb.employeeleave.util.enums.EmployeeStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;

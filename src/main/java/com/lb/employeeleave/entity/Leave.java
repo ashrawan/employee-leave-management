@@ -1,7 +1,7 @@
 package com.lb.employeeleave.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lb.employeeleave.constant.enums.LeaveStatus;
+import com.lb.employeeleave.util.enums.LeaveStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,6 +12,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name="leave_request")
+@NamedQuery(name = "Leave.findLeaveByDate",
+        query="select l from Leave l where (l.fromDate BETWEEN ?1 AND ?2) OR (l.toDate BETWEEN ?1 AND ?2)")
 public class Leave {
 
     @Id

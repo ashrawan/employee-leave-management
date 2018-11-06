@@ -1,11 +1,11 @@
-package com.lb.employeeleave.constant;
+package com.lb.employeeleave.util;
 
 public class ExceptionConstants {
 
     // Employee Exception Constant
     public static final String EMPLOYEE_RECORD_NOT_FOUND = "Employee doesn't exists";
     public static final String EMPLOYEE_USERNAME_NOT_VALID = "Employee username not valid";
-    public static final String OLD_PASSWORD_DOESNT_MATCH = "Old Password Doesnt Match";
+    public static final String OLD_PASSWORD_DOESNT_MATCH = "Old Password Doesn't Match";
     public static final String EMPLOYEE_SUPERVISOR_MISMATCH = "Employee supervisor mismatch";
 
     // Leave Exception Constant
@@ -18,5 +18,8 @@ public class ExceptionConstants {
 
     // Unauthorized Request
     public static final String YOU_CANT_REVIEW_THIS_REQUEST = "You cant review this request";
+
+    // Utils error
+    public static final String DATE_CANT_BE_PARSED = "Date can't be parsed";
 
 }

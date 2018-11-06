@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface LeaveService {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
@@ -27,4 +30,7 @@ public interface LeaveService {
     // only employee on their own pending leave request
     @PreAuthorize("#id == authentication.principal.id ")
     LeaveDTO ChangeEmployeeLeaveStatus(Long id);
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    List<LeaveDTO> retrieveEmployeeLeaveByDate(String dateFrom, String dateTo);
 }

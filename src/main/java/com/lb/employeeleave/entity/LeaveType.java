@@ -1,6 +1,6 @@
 package com.lb.employeeleave.entity;
 
-import com.lb.employeeleave.constant.enums.LeaveTypeStatus;
+import com.lb.employeeleave.util.enums.LeaveTypeStatus;
 
 import javax.persistence.*;
 import java.util.Objects;

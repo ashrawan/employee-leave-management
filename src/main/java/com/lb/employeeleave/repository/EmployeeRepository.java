@@ -1,6 +1,6 @@
 package com.lb.employeeleave.repository;
 
-import com.lb.employeeleave.constant.enums.EmployeeStatus;
+import com.lb.employeeleave.util.enums.EmployeeStatus;
 import com.lb.employeeleave.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

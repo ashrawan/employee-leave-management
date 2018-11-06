@@ -1,4 +1,4 @@
-package com.lb.employeeleave.constant.enums;
+package com.lb.employeeleave.util.enums;
 
 public enum EmployeeStatus {
     PENDING, ACTIVE, INACTIVE

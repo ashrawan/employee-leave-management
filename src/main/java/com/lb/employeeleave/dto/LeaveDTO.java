@@ -1,6 +1,6 @@
 package com.lb.employeeleave.dto;
 
-import com.lb.employeeleave.constant.enums.LeaveStatus;
+import com.lb.employeeleave.util.enums.LeaveStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

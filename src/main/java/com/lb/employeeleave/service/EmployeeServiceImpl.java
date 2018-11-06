@@ -1,7 +1,7 @@
 package com.lb.employeeleave.service;
 
-import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.EmployeeStatus;
+import com.lb.employeeleave.util.ExceptionConstants;
+import com.lb.employeeleave.util.enums.EmployeeStatus;
 import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.entity.Employee;
 import com.lb.employeeleave.exceptions.DataConflictException;
@@ -156,6 +156,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Page<EmployeeDTO> getAllEmployeesByName(Pageable pageable, String fullName) {
 
         return employeeRepository.findByFirstNameContainingOrMiddleNameContainingOrLastNameContaining(pageable, fullName, fullName, fullName)
-                .map(employee -> EmployeeMapper.mapToDto(employee));
+                .map(employee -> EmployeeMapper.mapToDTOWithSupervisor(employee));
     }
 }

@@ -1,7 +1,8 @@
 package com.lb.employeeleave.service;
 
-import com.lb.employeeleave.constant.ExceptionConstants;
-import com.lb.employeeleave.constant.enums.LeaveStatus;
+import com.lb.employeeleave.util.DateUtil;
+import com.lb.employeeleave.util.ExceptionConstants;
+import com.lb.employeeleave.util.enums.LeaveStatus;
 import com.lb.employeeleave.dto.EmployeeDTO;
 import com.lb.employeeleave.dto.LeaveDTO;
 import com.lb.employeeleave.entity.Employee;
@@ -15,6 +16,9 @@ import com.lb.employeeleave.security.ExtractUserAuthentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LeaveServiceImpl implements LeaveService {
@@ -153,5 +157,13 @@ public class LeaveServiceImpl implements LeaveService {
         }
         returnedEmployeeLeave.setStatus(LeaveStatus.INACTIVE);
         return LeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
+    }
+
+    @Override
+    public List<LeaveDTO> retrieveEmployeeLeaveByDate(String date1, String date2) {
+        return employeeLeaveRepository.findLeaveByDate(DateUtil.convertToDate(date1), DateUtil.convertToDate(date2))
+                .stream()
+                .map(leave -> LeaveMapper.mapToDto(leave))
+                .collect(Collectors.toList());
     }
 }
