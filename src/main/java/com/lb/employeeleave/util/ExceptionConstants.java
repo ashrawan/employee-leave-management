@@ -16,6 +16,9 @@ public class ExceptionConstants {
     public static final String LEAVE_TYPE_RECORD_NOT_FOUND = "Leave type not found";
     public static final String LEAVE_TYPE_NAME_NOT_VALID = "Leave type name not valid";
 
+    // Event Exception Constant
+    public static final String EVENT_RECORD_NOT_FOUND = "Event doesn't exists";
+
     // Unauthorized Request
     public static final String YOU_CANT_REVIEW_THIS_REQUEST = "You cant review this request";
 

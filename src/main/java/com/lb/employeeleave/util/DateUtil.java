@@ -13,7 +13,7 @@ public class DateUtil {
         try {
             localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         } catch (Exception e){
-            throw new DataConflictException( ExceptionConstants.DATE_CANT_BE_PARSED +" : "+date);
+            throw new DataConflictException( ExceptionConstants.DATE_CANT_BE_PARSED +" : # "+date);
         }
         return localDate;
     }
@@ -21,7 +21,7 @@ public class DateUtil {
     public static LocalDateTime convertToDateTime(String date){
         LocalDateTime localDateTime = null; 
         try {
-            localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+            localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         } catch (Exception e){
             throw new DataConflictException( ExceptionConstants.DATE_CANT_BE_PARSED +" : "+date);
         }

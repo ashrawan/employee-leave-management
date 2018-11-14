@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name="leave_request")
 @NamedQuery(name = "Leave.findLeaveByDate",
-        query="select l from Leave l where (l.fromDate BETWEEN ?1 AND ?2) OR (l.toDate BETWEEN ?1 AND ?2)")
+        query="select l from Leave l where ((l.fromDate BETWEEN ?1 AND ?2) OR (l.toDate BETWEEN ?1 AND ?2)) AND l.approved=1 ")
 public class Leave {
 
     @Id

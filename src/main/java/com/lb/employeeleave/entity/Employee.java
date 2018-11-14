@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="employee")
@@ -51,6 +52,10 @@ public class Employee {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="supervisor")
     private Employee supervisor;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -148,6 +153,14 @@ public class Employee {
         this.supervisor = supervisor;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -164,11 +177,12 @@ public class Employee {
                 Objects.equals(phoneNumber, employee.phoneNumber) &&
                 Objects.equals(createdAt, employee.createdAt) &&
                 status == employee.status &&
-                Objects.equals(supervisor, employee.supervisor);
+                Objects.equals(supervisor, employee.supervisor) &&
+                Objects.equals(group, employee.group);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, firstName, middleName, lastName, email, username, password, role, phoneNumber, createdAt, status, supervisor);
+        return Objects.hash(employeeId, firstName, middleName, lastName, email, username, password, role, phoneNumber, createdAt, status, supervisor, group);
     }
 }
