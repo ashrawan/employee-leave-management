@@ -1,5 +1,6 @@
 package com.lb.employeeleave.service;
 
+import com.lb.employeeleave.mapper.StatusMapper;
 import com.lb.employeeleave.util.DateUtil;
 import com.lb.employeeleave.util.ExceptionConstants;
 import com.lb.employeeleave.util.enums.LeaveStatus;
@@ -70,7 +71,7 @@ public class LeaveServiceImpl implements LeaveService {
         employeeDTO.setEmployeeId(employeeId);
 
         leaveDTO.setEmployeeDTO(employeeDTO);
-        leaveDTO.setStatus(LeaveStatus.PENDING);
+        leaveDTO.setStatus(leaveDTO.getStatus());
         Leave employeeLeave = employeeLeaveRepository.save(LeaveMapper.mapToEntity(leaveDTO));
         return LeaveMapper.mapToDto(employeeLeave);
     }
@@ -130,8 +131,7 @@ public class LeaveServiceImpl implements LeaveService {
             }
 //            throw new UnauthorizedRequest(ExceptionConstants.YOU_CANT_REVIEW_THIS_REQUEST);
         }
-        returnedEmployeeLeave.setApproved(leaveDTO.isApproved());
-        returnedEmployeeLeave.setStatus(LeaveStatus.ACTIVE);
+        returnedEmployeeLeave.setStatus(StatusMapper.mapLeaveStatus(String.valueOf(leaveDTO.getStatus())));
         returnedEmployeeLeave.setReviewedBy(approverEmployee);
         returnedEmployeeLeave.setDeniedReason(leaveDTO.getDeniedReason());
         return LeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
@@ -146,7 +146,7 @@ public class LeaveServiceImpl implements LeaveService {
      * @return boolean value of Leave Deletion
      */
     @Override
-    public LeaveDTO ChangeEmployeeLeaveStatus(Long id) {
+    public LeaveDTO ChangeEmployeeLeaveStatus(Long id, String status) {
 
         Leave returnedEmployeeLeave = employeeLeaveRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.EMPLOYEE_LEAVE_RECORD_NOT_FOUND));
@@ -155,7 +155,7 @@ public class LeaveServiceImpl implements LeaveService {
         if(returnedEmployeeLeave.getReviewedBy() != null){
             throw new DataConflictException(ExceptionConstants.EMPLOYEE_LEAVE_ACTION_ALREADY_TAKEN);
         }
-        returnedEmployeeLeave.setStatus(LeaveStatus.INACTIVE);
+        returnedEmployeeLeave.setStatus(StatusMapper.mapLeaveStatus(status));
         return LeaveMapper.mapToDto(employeeLeaveRepository.save(returnedEmployeeLeave));
     }
 

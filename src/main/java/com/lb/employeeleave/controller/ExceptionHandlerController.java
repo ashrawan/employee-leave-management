@@ -53,6 +53,7 @@ public class ExceptionHandlerController {
     public ResponseEntity<?> illegalArgumentException(final IllegalArgumentException ex, final HttpServletRequest request) {
 
         LOGGER.info("IllegalArgumentException handled");
+        ex.printStackTrace();
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setCallerUrl(request.getRequestURI());

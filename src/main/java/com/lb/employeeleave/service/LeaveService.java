@@ -29,7 +29,7 @@ public interface LeaveService {
 
     // only employee on their own pending leave request
     @PreAuthorize("#id == authentication.principal.id ")
-    LeaveDTO ChangeEmployeeLeaveStatus(Long id);
+    LeaveDTO ChangeEmployeeLeaveStatus(Long id, String status);
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     List<LeaveDTO> retrieveEmployeeLeaveByDate(String dateFrom, String dateTo);

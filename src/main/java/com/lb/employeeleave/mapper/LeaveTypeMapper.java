@@ -9,7 +9,7 @@ public class LeaveTypeMapper {
         LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
         leaveTypeDTO.setLeaveTypeId(leaveType.getLeaveTypeId());
         leaveTypeDTO.setTypeName(leaveType.getTypeName());
-        leaveTypeDTO.setStatus(leaveType.getStatus());
+        leaveTypeDTO.setStatus(String.valueOf(leaveType.getStatus()));
         return leaveTypeDTO;
     }
 
@@ -17,7 +17,7 @@ public class LeaveTypeMapper {
         LeaveType leaveType = new LeaveType();
         leaveType.setLeaveTypeId(leaveTypeDTO.getLeaveTypeId());
         leaveType.setTypeName(leaveTypeDTO.getTypeName());
-        leaveType.setStatus(leaveTypeDTO.getStatus());
+        leaveType.setStatus(StatusMapper.mapLeaveTypeStatus(leaveTypeDTO.getStatus()));
         return leaveType;
     }
 }

@@ -1,7 +1,5 @@
 package com.lb.employeeleave.dto;
 
-import com.lb.employeeleave.util.enums.LeaveStatus;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,11 +17,9 @@ public class LeaveDTO {
 
     private LocalDate toDate;
 
-    private boolean approved;
-
     private String deniedReason;
 
-    private LeaveStatus status;
+    private String status;
 
     private LocalDateTime createdAt;
 
@@ -77,14 +73,6 @@ public class LeaveDTO {
         this.toDate = toDate;
     }
 
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
-
     public String getDeniedReason() {
         return deniedReason;
     }
@@ -93,11 +81,11 @@ public class LeaveDTO {
         this.deniedReason = deniedReason;
     }
 
-    public LeaveStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(LeaveStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

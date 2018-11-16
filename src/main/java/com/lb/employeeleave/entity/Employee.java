@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name="employee")
@@ -47,7 +46,7 @@ public class Employee {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private EmployeeStatus status = EmployeeStatus.PENDING;
+    private EmployeeStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="supervisor")

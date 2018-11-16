@@ -1,5 +1,6 @@
 package com.lb.employeeleave.service;
 
+import com.lb.employeeleave.mapper.StatusMapper;
 import com.lb.employeeleave.util.ExceptionConstants;
 import com.lb.employeeleave.util.enums.EmployeeStatus;
 import com.lb.employeeleave.dto.EmployeeDTO;
@@ -87,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDTO.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         employeeDTO.setRole("ROLE_USER");
         employeeDTO.setPhoneNumber(employeeDTO.getPhoneNumber());
-        employeeDTO.setStatus(EmployeeStatus.ACTIVE);
+        employeeDTO.setStatus(employeeDTO.getStatus());
         Employee employee = employeeRepository.save(EmployeeMapper.mapToEntityWithSupervisor(employeeDTO));
         return EmployeeMapper.mapToDto(employee);
     }

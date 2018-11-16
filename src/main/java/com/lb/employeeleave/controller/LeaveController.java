@@ -112,11 +112,11 @@ public class LeaveController {
      * @param id specifying Leave to delete
      * @return Boolean status of Leave deletion
      */
-    @DeleteMapping("/change-request-status/{id}")
-    public ResponseEntity<?> ChangeEmployeeLeaveStatus(@PathVariable long id){
+    @DeleteMapping("/change-request-status")
+    public ResponseEntity<?> ChangeEmployeeLeaveStatus(@RequestParam("id") long id, @RequestParam("status") String status){
 
         LOGGER.info("API Delete Pending Leave Request");
-        return new ResponseEntity<>(employeeLeaveService.ChangeEmployeeLeaveStatus(id), HttpStatus.OK);
+        return new ResponseEntity<>(employeeLeaveService.ChangeEmployeeLeaveStatus(id, status), HttpStatus.OK);
     }
 
     @GetMapping("/byDate")

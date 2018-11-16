@@ -19,7 +19,7 @@ public class LeaveType {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private LeaveTypeStatus status = LeaveTypeStatus.ACTIVE;
+    private LeaveTypeStatus status;
 
     public Long getLeaveTypeId() {
         return leaveTypeId;

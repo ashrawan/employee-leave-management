@@ -17,9 +17,8 @@ public class LeaveMapper {
         employeeLeaveDTO.setLeaveReason(employeeLeave.getLeaveReason());
         employeeLeaveDTO.setFromDate(employeeLeave.getFromDate());
         employeeLeaveDTO.setToDate(employeeLeave.getToDate());
-        employeeLeaveDTO.setApproved(employeeLeave.isApproved());
         employeeLeaveDTO.setDeniedReason(employeeLeave.getDeniedReason());
-        employeeLeaveDTO.setStatus(employeeLeave.getStatus());
+        employeeLeaveDTO.setStatus(String.valueOf(employeeLeave.getStatus()));
         employeeLeaveDTO.setCreatedAt(employeeLeave.getCreatedAt());
         if(employeeLeave.getReviewedBy() != null) {
             employeeLeaveDTO.setReviewedBy(EmployeeMapper.mapToDto(employeeLeave.getReviewedBy()));
@@ -39,9 +38,8 @@ public class LeaveMapper {
         employeeLeave.setLeaveReason(employeeLeaveDTO.getLeaveReason());
         employeeLeave.setFromDate(employeeLeaveDTO.getFromDate());
         employeeLeave.setToDate(employeeLeaveDTO.getToDate());
-        employeeLeave.setApproved(employeeLeaveDTO.isApproved());
         employeeLeave.setDeniedReason(employeeLeaveDTO.getDeniedReason());
-        employeeLeave.setStatus(employeeLeaveDTO.getStatus());
+        employeeLeave.setStatus(StatusMapper.mapLeaveStatus(employeeLeaveDTO.getStatus()));
         employeeLeave.setCreatedAt(employeeLeaveDTO.getCreatedAt());
         if(employeeLeaveDTO.getReviewedBy() != null) {
             employeeLeave.setReviewedBy(EmployeeMapper.mapToEntity(employeeLeaveDTO.getReviewedBy()));
