@@ -9,9 +9,6 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
 
-/**
- * Created by daz on 01/07/2017.
- */
 @Configuration
 public class AppConfig {
     
