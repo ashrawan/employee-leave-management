@@ -2,6 +2,11 @@
 
 #### Working Demo: https://ashrawan.github.io/leave-management-angular/
 
+ Github Link:
+- [x] Backend: https://github.com/ashrawan/employee-leave-management
+- [ ] Frontend: https://github.com/ashrawan/leave-management-angular
+
+
 # Test Credentials:
 
 - username: admin, password: admin,
@@ -57,7 +62,3 @@ CLASS DIAGRAM
   
 **![](https://lh6.googleusercontent.com/tL6LIniTCrbQqbc-c_5lecXCaJdPveXW44Vl2w2_XJG9jRTps5_WsgXz-bkUqmLO9vMTp90cIPBIaFepTfXktv2Imr0XBprUbR0pFdVw4nvjJLrNBgu0_8U7oJDXama4LKiovA8-)**  
  
- 
- Github Link:
-- [x] Backend: https://github.com/ashrawan/employee-leave-management
-- [ ] Frontend: https://github.com/ashrawan/leave-management-angular
